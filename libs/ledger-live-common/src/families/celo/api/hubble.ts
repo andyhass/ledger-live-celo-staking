@@ -39,8 +39,6 @@ const fetchValidatorGroups = async () => {
   return data.items;
 };
 
-//TODO: fetch extra - validator group addresses for vote etc. Rename freeze -> lock etc
-
 const getOperationType = (type: string): OperationType => {
   switch (type) {
     case "InternalTransferSent":

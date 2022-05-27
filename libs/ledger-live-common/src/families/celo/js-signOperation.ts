@@ -31,7 +31,6 @@ const buildOptimisticOperation = (
   const type = (MODE_TO_TYPE[transaction.mode] ??
     MODE_TO_TYPE.default) as OperationType;
 
-  //TODO: check, should we add it? check send, check other transactions, check syncing
   const value =
     type === "OUT" || type === "LOCK"
       ? new BigNumber(transaction.amount).plus(fee)

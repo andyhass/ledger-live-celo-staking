@@ -66,7 +66,6 @@ export function StepAmountFooter({
   const { errors } = status;
   const hasErrors = Object.keys(errors).length;
   const canNext = !bridgePending && !hasErrors;
-  console.log('canNext', canNext, !bridgePending, !hasErrors, errors)
 
   return (
     <>

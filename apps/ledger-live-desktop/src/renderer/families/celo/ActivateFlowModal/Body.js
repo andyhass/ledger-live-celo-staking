@@ -157,7 +157,6 @@ const Body = ({
   ]);
 
   const error =
-    // WARNING: this is bad practice. out of scope but see context of a fix done for LL-3854
     transactionError || bridgeError || (statusError instanceof Error ? statusError : null);
 
   const stepperProps = {
