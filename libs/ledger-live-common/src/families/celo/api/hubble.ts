@@ -80,8 +80,9 @@ const transactionToOperation = (
   const data = transaction.data;
   const sender = data?.Account || data?.from;
   const recipient = data?.Group || data?.to;
-  //TODO: fetch/calculate fee from indexer when gas data is available
-  const fee = new BigNumber(150930000000000);
+  const fee = new BigNumber(transaction.data.gas_used).times(
+    new BigNumber(transaction.data.gas_price)
+  );
   const value =
     type === "LOCK"
       ? new BigNumber(transaction.amount).plus(fee)
