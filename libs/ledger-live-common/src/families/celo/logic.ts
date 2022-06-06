@@ -9,7 +9,7 @@ import { BigNumber } from "bignumber.js";
 
 export const PRELOAD_MAX_AGE = 10 * 60 * 1000;
 const LEDGER_BY_FIGMENT_VALIDATOR_GROUP_ADDRESS =
-  "0x0861a61Bf679A30680510EcC238ee43B82C5e843";
+  "0x0861a61bf679a30680510ecc238ee43b82c5e843";
 
 export const availablePendingWithdrawals = (
   account: Account
