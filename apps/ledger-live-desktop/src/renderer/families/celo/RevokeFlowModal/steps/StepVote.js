@@ -65,7 +65,7 @@ export default function StepVote({
 
   return (
     <Box flow={1}>
-      <TrackPage category="Withdraw Flow" name="Step 1" />
+      <TrackPage category="Celo Revoke" name="Step 1" />
       {error ? <ErrorBanner error={error} /> : null}
       <Alert type="primary" mb={4} learnMoreUrl={urls.celo.revoking}>
         <Trans i18nKey="celo.revoke.steps.vote.info" />

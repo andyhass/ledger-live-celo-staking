@@ -68,7 +68,7 @@ export default function StepVote({
 
   return (
     <Box flow={1}>
-      <TrackPage category="Withdraw Flow" name="Step 1" />
+      <TrackPage category="Celo Activate" name="Step 1" />
       {error ? <ErrorBanner error={error} /> : null}
       <Box vertical>
         {mappedVotes.map(({ vote, validatorGroup }) => {

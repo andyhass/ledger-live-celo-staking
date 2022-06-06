@@ -31,7 +31,7 @@ export default function StepAmount({
   return (
     <Box flow={1}>
       <SyncSkipUnderPriority priority={100} />
-      <TrackPage category="Unlock Flow" name="Step 1" />
+      <TrackPage category="Celo Unlock" name="Step 1" />
       {error && <ErrorBanner error={error} />}
       <Alert
         type="primary"
