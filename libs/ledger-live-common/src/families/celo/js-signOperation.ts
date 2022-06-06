@@ -1,7 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import { Observable } from "rxjs";
 import { FeeNotLoaded } from "@ledgerhq/errors";
-import type { Transaction } from "./types";
+import type { Transaction, CeloOperationMode } from "./types";
 import type { Account, Operation, SignOperationEvent } from "../../types";
 import { encodeOperationId } from "../../operation";
 import { CeloApp } from "./hw-app-celo";
@@ -11,7 +11,7 @@ import { tokenInfoByAddressAndChainId } from "@celo/wallet-ledger/lib/tokens";
 import { withDevice } from "../../hw/deviceAccess";
 import { OperationType } from "../../types";
 
-const MODE_TO_TYPE = {
+const MODE_TO_TYPE: { [key in CeloOperationMode | "default"]: string } = {
   send: "OUT",
   lock: "LOCK",
   unlock: "UNLOCK",

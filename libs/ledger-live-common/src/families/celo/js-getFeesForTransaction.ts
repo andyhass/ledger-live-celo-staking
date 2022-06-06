@@ -15,7 +15,7 @@ const getFeesForTransaction = async ({
   const kit = celoKit();
 
   // A workaround - estimating gas throws an error if value > funds
-  let value;
+  let value: BigNumber = new BigNumber(0);
 
   //TODO: needs refactoring? DRY with js-buildTransaction/getTransactionStatus, pass an amount for minimum?
   if (
@@ -38,7 +38,7 @@ const getFeesForTransaction = async ({
       : BigNumber.minimum(amount, account.spendableBalance);
   }
 
-  let gas;
+  let gas: number | null = null;
   if (transaction.mode === "lock") {
     const lockedGold = await kit.contracts.getLockedGold();
 

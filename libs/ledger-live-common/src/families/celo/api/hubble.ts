@@ -144,8 +144,7 @@ export const getValidatorGroups = async (): Promise<CeloValidatorGroup[]> => {
   const validatorGroups = await fetchValidatorGroups();
 
   const result = validatorGroups.map((validatorGroup) => ({
-    //TODO: toLowerCase()?
-    address: validatorGroup.address,
+    address: validatorGroup.address.toLowerCase(),
     name: validatorGroup.name || validatorGroup.address,
     votes: new BigNumber(validatorGroup.active_votes).plus(
       new BigNumber(validatorGroup.pending_votes)
@@ -155,20 +154,13 @@ export const getValidatorGroups = async (): Promise<CeloValidatorGroup[]> => {
 };
 
 const customValidatorGroupsOrder = (validatorGroups): CeloValidatorGroup[] => {
-  let sortedValidatorGroups = validatorGroups.sort((a, b) =>
-    b.votes.minus(a.votes)
-  );
+  const defaultValidatorGroup = validatorGroups.find(isDefaultValidatorGroup);
 
-  const defaultValidatorGroup = sortedValidatorGroups.find(
-    isDefaultValidatorGroup
-  );
+  const sortedValidatorGroups = [...validatorGroups]
+    .sort((a, b) => b.votes.minus(a.votes))
+    .filter((group) => !isDefaultValidatorGroup(group));
 
-  if (defaultValidatorGroup) {
-    sortedValidatorGroups = sortedValidatorGroups.filter(
-      (validatorGroup) => !isDefaultValidatorGroup(validatorGroup)
-    );
-    sortedValidatorGroups.unshift(defaultValidatorGroup);
-  }
-
-  return sortedValidatorGroups;
+  return defaultValidatorGroup
+    ? [defaultValidatorGroup, ...sortedValidatorGroups]
+    : sortedValidatorGroups;
 };
