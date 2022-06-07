@@ -110,7 +110,6 @@ const getFeesForTransaction = async ({
       .createAccount()
       .txo.estimateGas({ from: account.freshAddress });
   } else {
-    //TODO: check sending
     const celoToken = await kit.contracts.getGoldToken();
 
     const celoTransaction = {
