@@ -43,7 +43,9 @@ const OperationDetailsExtra = ({ operation, type, account }: OperationDetailsExt
       const recipient = operation.recipients[0];
       const validatorGroup =
         recipient &&
-        (validatorGroups.find(validatorGroup => validatorGroup.address === recipient) ||
+        (validatorGroups.find(
+          validatorGroup => validatorGroup.address.toLowerCase() === recipient.toLowerCase(),
+        ) ||
           fallbackValidatorGroup(recipient));
 
       return (

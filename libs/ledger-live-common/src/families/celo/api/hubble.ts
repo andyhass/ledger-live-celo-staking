@@ -145,7 +145,7 @@ export const getValidatorGroups = async (): Promise<CeloValidatorGroup[]> => {
   const validatorGroups = await fetchValidatorGroups();
 
   const result = validatorGroups.map((validatorGroup) => ({
-    address: validatorGroup.address.toLowerCase(),
+    address: validatorGroup.address,
     name: validatorGroup.name || validatorGroup.address,
     votes: new BigNumber(validatorGroup.active_votes).plus(
       new BigNumber(validatorGroup.pending_votes)

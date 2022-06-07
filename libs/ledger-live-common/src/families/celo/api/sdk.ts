@@ -50,7 +50,7 @@ export const getVotes = async (address: string): Promise<CeloVote[]> => {
       // If there's a pending vote, it has to be revoked first
       activeVoteRevokable = false;
       votes.push({
-        validatorGroup: vote.group.toLowerCase(),
+        validatorGroup: vote.group,
         amount: vote.pending,
         // Not all pending votes can be activated, 24h has to pass
         activatable: activatableValidatorGroups.includes(vote.group),
@@ -61,7 +61,7 @@ export const getVotes = async (address: string): Promise<CeloVote[]> => {
     }
     if (vote.active.gt(0))
       votes.push({
-        validatorGroup: vote.group.toLowerCase(),
+        validatorGroup: vote.group,
         amount: vote.active,
         activatable: false,
         revokable: activeVoteRevokable,
