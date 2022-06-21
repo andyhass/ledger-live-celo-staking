@@ -1,3 +1,20 @@
+const testPathIgnorePatterns = [
+  "benchmark/",
+  "tools/",
+  "mobile-test-app/",
+  "lib/",
+  "lib-es/",
+  ".yalc",
+  "cli/",
+  "test-helpers/",
+];
+let testRegex = "(/__tests__/.*|(\\.|/)(test|spec))\\.[jt]sx?$";
+if (process.env.IGNORE_INTEGRATION_TESTS) {
+  testPathIgnorePatterns.push(".*\\.integration\\.test\\.[tj]s");
+}
+if (process.env.ONLY_INTEGRATION_TESTS) {
+  testRegex = "(/__tests__/.*|(\\.|/)integration\\.(test|spec))\\.[jt]sx?$";
+}
 export default {
   preset: "ts-jest",
   globals: {
@@ -14,16 +31,8 @@ export default {
     "<rootDir>/benchmark/.*",
     "<rootDir>/cli/.yalc/.*",
   ],
-  testPathIgnorePatterns: [
-    "benchmark/",
-    "tools/",
-    "mobile-test-app/",
-    "lib/",
-    "lib-es/",
-    ".yalc",
-    "cli/",
-    "test-helpers/",
-  ],
+  testPathIgnorePatterns,
+  testRegex,
   moduleNameMapper: {
     "^@polkadot/([^/]+)/(.+)$": [
       "@polkadot/$1/index.cjs",

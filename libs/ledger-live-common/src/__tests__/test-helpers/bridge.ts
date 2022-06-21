@@ -1,6 +1,5 @@
 import invariant from "invariant";
 import { BigNumber } from "bignumber.js";
-import { Observable, defer, from } from "rxjs";
 import { reduce, filter, map } from "rxjs/operators";
 import flatMap from "lodash/flatMap";
 import omit from "lodash/omit";
@@ -69,10 +68,7 @@ export function syncAccount<T extends Transaction>(
     .toPromise();
 }
 
-export function testBridge<T extends Transaction>(
-  family: string,
-  data: DatasetTest<T>
-) {
+export function testBridge<T extends Transaction>(data: DatasetTest<T>): void {
   // covers all bridges through many different accounts
   // to test the common shared properties of bridges.
   const accountsRelated: Array<{
@@ -120,7 +116,7 @@ export function testBridge<T extends Transaction>(
     );
   });
   const accountsFoundInScanAccountsMap = {};
-  const preloadObservables: Array<Observable<any>> = [];
+
   currenciesRelated.map(({ currencyData, currency }) => {
     const bridge = getCurrencyBridge(currency);
 
@@ -212,16 +208,6 @@ export function testBridge<T extends Transaction>(
         describe("scanAccounts", () => {
           scanAccounts.forEach((sa) => {
             // we start running the scan accounts in parallel!
-            preloadObservables.push(
-              defer(() =>
-                from(
-                  scanAccountsCached(sa.apdus).then(
-                    () => null,
-                    () => {}
-                  )
-                )
-              )
-            );
             test(sa.name, async () => {
               const accounts = await scanAccountsCached(sa.apdus);
               accounts.forEach((a) => {
@@ -785,7 +771,4 @@ export function testBridge<T extends Transaction>(
         });
       });
     });
-  return {
-    preloadObservables,
-  };
 }
