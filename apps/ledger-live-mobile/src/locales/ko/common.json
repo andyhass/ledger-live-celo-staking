@@ -1541,7 +1541,12 @@
       "WITHDRAW_UNBONDED": "출금",
       "NOMINATE": "지명",
       "CHILL": "지명 해제",
-      "SET_CONTROLLER": "관리자 설정"
+      "SET_CONTROLLER": "관리자 설정",
+      "ACTIVATE": "Activated",
+      "LOCK": "Locked",
+      "UNLOCK": "Unlocked",
+      "REVOKE": "Revoked",
+      "REGISTER": "Registered"
     }
   },
   "operationDetails": {

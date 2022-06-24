@@ -1541,7 +1541,12 @@
       "WITHDRAW_UNBONDED": "引き出す",
       "NOMINATE": "ノミネート",
       "CHILL": "ノミネートを解除する",
-      "SET_CONTROLLER": "コントローラーを設定"
+      "SET_CONTROLLER": "コントローラーを設定",
+      "ACTIVATE": "Activated",
+      "LOCK": "Locked",
+      "UNLOCK": "Unlocked",
+      "REVOKE": "Revoked",
+      "REGISTER": "Registered"
     }
   },
   "operationDetails": {

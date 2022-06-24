@@ -1541,7 +1541,12 @@
       "WITHDRAW_UNBONDED": "提取",
       "NOMINATE": "提名",
       "CHILL": "清除提名",
-      "SET_CONTROLLER": "设置控制器"
+      "SET_CONTROLLER": "设置控制器",
+      "ACTIVATE": "Activated",
+      "LOCK": "Locked",
+      "UNLOCK": "Unlocked",
+      "REVOKE": "Revoked",
+      "REGISTER": "Registered"
     }
   },
   "operationDetails": {

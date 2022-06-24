@@ -1541,7 +1541,12 @@
       "WITHDRAW_UNBONDED": "Retiro",
       "NOMINATE": "Nominación",
       "CHILL": "Borrar nominaciones",
-      "SET_CONTROLLER": "Definir controladora"
+      "SET_CONTROLLER": "Definir controladora",
+      "ACTIVATE": "Activated",
+      "LOCK": "Locked",
+      "UNLOCK": "Unlocked",
+      "REVOKE": "Revoked",
+      "REGISTER": "Registered"
     }
   },
   "operationDetails": {

@@ -1541,7 +1541,12 @@
       "WITHDRAW_UNBONDED": "Вывод разблок. средств",
       "NOMINATE": "Голосование",
       "CHILL": "Очистить голоса",
-      "SET_CONTROLLER": "Назначить контроллера"
+      "SET_CONTROLLER": "Назначить контроллера",
+      "ACTIVATE": "Activated",
+      "LOCK": "Locked",
+      "UNLOCK": "Unlocked",
+      "REVOKE": "Revoked",
+      "REGISTER": "Registered"
     }
   },
   "operationDetails": {
