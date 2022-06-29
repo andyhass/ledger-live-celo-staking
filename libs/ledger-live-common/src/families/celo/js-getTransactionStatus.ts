@@ -45,7 +45,6 @@ const getTransactionStatus = async (
     if (revoke?.amount) amount = revoke.amount;
   } else if (useAllAmount) {
     amount = account.spendableBalance.minus(estimatedFees);
-    if (transaction.mode === "lock") amount = amount.minus(FEES_SAFETY_BUFFER);
   } else {
     amount = new BigNumber(transaction.amount);
   }
@@ -55,8 +54,10 @@ const getTransactionStatus = async (
   if (amount.lt(0)) amount = new BigNumber(0);
 
   if (
-    transaction.mode === "lock" &&
-    amount.gte(account.spendableBalance.minus(FEES_SAFETY_BUFFER))
+    !errors.amount &&
+    account.celoResources?.lockedBalance.gt(0) &&
+    (transaction.useAllAmount ||
+      account.spendableBalance.minus(amount).lt(FEES_SAFETY_BUFFER))
   ) {
     warnings.amount = new CeloAllFundsWarning();
   }
