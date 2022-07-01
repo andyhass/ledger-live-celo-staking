@@ -113,6 +113,7 @@ export function StepVoteFooter({
           id="vote-continue-button"
           disabled={!canNext}
           primary
+          isLoading={bridgePending}
           onClick={() => transitionTo("amount")}
         >
           <Trans i18nKey="common.continue" />

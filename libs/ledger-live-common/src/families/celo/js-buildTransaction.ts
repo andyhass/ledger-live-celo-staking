@@ -7,6 +7,13 @@ import { getVote } from "./logic";
 
 // TODO: a lot of this code overlaps with getFeesForTransaction, but not all. Check if passing an extracted
 // celoTransaction from here to getFees estimateGas would work
+/**
+ * 
+ * here's a lot of code that I want to refactor, I haven't done it yet because I wanted to have all modes of transactions ready. A lot of code is similar but not the same so I'll need to refactor carefully, ideally by writing bot specs first
+
+@marco-figment marco-figment 17 days ago
++1 on using the bot for each case
+ */
 const buildTransaction = async (account: Account, transaction: Transaction) => {
   const kit = celoKit();
 
@@ -22,6 +29,10 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       value: value.toFixed(),
       to: lockedGold.address,
       data: lockedGold.lock().txo.encodeABI(),
+      gas: await lockedGold.lock().txo.estimateGas({
+        from: account.freshAddress,
+        value: value.toFixed(),
+      }),
     };
   } else if (transaction.mode === "unlock") {
     const lockedGold = await kit.contracts.getLockedGold();
@@ -29,6 +40,9 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       from: account.freshAddress,
       to: lockedGold.address,
       data: lockedGold.unlock(value).txo.encodeABI(),
+      gas: await lockedGold.unlock(value).txo.estimateGas({
+        from: account.freshAddress,
+      }),
     };
   } else if (transaction.mode === "withdraw") {
     const lockedGold = await kit.contracts.getLockedGold();
@@ -37,6 +51,10 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       from: account.freshAddress,
       to: lockedGold.address,
       data: lockedGold.withdraw(transaction.index || 0).txo.encodeABI(),
+      gas: await lockedGold.withdraw(transaction.index || 0).txo.estimateGas({
+        from: account.freshAddress,
+        value: value.toFixed(),
+      }),
     };
   } else if (transaction.mode === "vote") {
     const election = await kit.contracts.getElection();
@@ -49,6 +67,7 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       from: account.freshAddress,
       to: election.address,
       data: vote.txo.encodeABI(),
+      gas: await vote.txo.estimateGas({ from: account.freshAddress }),
     };
   } else if (transaction.mode === "revoke") {
     const election = await kit.contracts.getElection();
@@ -76,6 +95,7 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       from: account.freshAddress,
       to: election.address,
       data: revoke.txo.encodeABI(),
+      gas: await revoke.txo.estimateGas({ from: account.freshAddress }),
     };
   } else if (transaction.mode === "activate") {
     const election = await kit.contracts.getElection();
@@ -94,14 +114,19 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       from: account.freshAddress,
       to: election.address,
       data: activate.txo.encodeABI(),
+      gas: await activate.txo.estimateGas({
+        from: account.freshAddress,
+      }),
     };
   } else if (transaction.mode === "register") {
     const accounts = await kit.contracts.getAccounts();
-
     celoTransaction = {
       from: account.freshAddress,
       to: accounts.address,
       data: accounts.createAccount().txo.encodeABI(),
+      gas: await accounts
+        .createAccount()
+        .txo.estimateGas({ from: account.freshAddress }),
     };
   } else {
     // Send
@@ -112,16 +137,17 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       data: celoToken
         .transfer(transaction.recipient, value.toFixed())
         .txo.encodeABI(),
+      gas: await kit.connection.estimateGasWithInflationFactor(celoTransaction),
     };
   }
-
-  return {
+  const tx: CeloTx = {
     ...celoTransaction,
     chainId: await kit.connection.chainId(),
     nonce: await kit.connection.nonce(account.freshAddress),
-    gas: await kit.connection.estimateGasWithInflationFactor(celoTransaction),
     gasPrice: await kit.connection.gasPrice(),
-  } as CeloTx;
+  };
+
+  return tx;
 };
 
 const transactionValue = (

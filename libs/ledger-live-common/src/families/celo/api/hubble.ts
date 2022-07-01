@@ -116,6 +116,17 @@ export const getAccountDetails = async (address: string, accountId: string) => {
   const indexerStatus = await fetchStatus();
 
   //TODO: refactor, cache, move to sdk
+  /**
+   * indexer returns some of transactions doubled, I have to clean it up using lockedGold contract address. I'll need to refactor this part and cache it
+
+@andyhass andyhass 20 days ago
+Is this a bug in the indexers, or is there a reason transactions are doubled?
+
+Owner
+Author
+@pawelnguyen pawelnguyen 17 days ago
+That's how indexer returns them because that's how Celo works - signing a contract is one transaction, but also an amount is being sent to that contract at the same time which is also caught by an indexer. In LL we care only for a contract transaction so I think it's fine to filter it
+   */
   const kit = celoKit();
   const lockedGold = await kit.contracts.getLockedGold();
 

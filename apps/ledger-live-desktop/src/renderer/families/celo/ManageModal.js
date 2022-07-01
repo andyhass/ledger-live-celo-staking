@@ -140,7 +140,6 @@ const ManageModal = ({ name, account, ...rest }: Props) => {
           onClose={onClose}
           onBack={undefined}
           title={<Trans i18nKey="celo.manage.title" />}
-          noScroll
           render={() => (
             <>
               <Box>
