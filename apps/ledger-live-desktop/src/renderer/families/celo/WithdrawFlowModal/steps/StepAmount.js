@@ -9,6 +9,8 @@ import moment from "moment";
 import type { StepProps } from "../types";
 
 import { getAccountBridge } from "@ledgerhq/live-common/lib/bridge";
+import { TransactionRefusedOnDevice } from "@ledgerhq/live-common/lib/errors";
+import { UserRefusedOnDevice } from "@ledgerhq/errors";
 
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
@@ -107,7 +109,10 @@ export default function StepAmount({
   return (
     <Box flow={1}>
       <TrackPage category="Celo Withdraw" name="Step 1" />
-      {error ? <ErrorBanner error={error} /> : null}
+      {error &&
+      !(error instanceof UserRefusedOnDevice || error instanceof TransactionRefusedOnDevice) ? (
+        <ErrorBanner error={error} />
+      ) : null}
       <Box vertical>
         {pendingWithdrawals.map(({ value, time, index }) => {
           const withdrawalTime = new Date(time.toNumber() * 1000);
