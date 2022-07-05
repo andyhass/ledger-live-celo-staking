@@ -80,7 +80,7 @@ export class StepAmountFooter extends PureComponent<StepProps> {
           disabled={!canNext}
           onClick={this.onNext}
         >
-          <Trans i18nKey="common.continue" />
+          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
         </Button>
       </>
     );

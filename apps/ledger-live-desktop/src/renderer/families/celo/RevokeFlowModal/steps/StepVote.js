@@ -116,7 +116,7 @@ export function StepVoteFooter({
           isLoading={bridgePending}
           onClick={() => transitionTo("amount")}
         >
-          <Trans i18nKey="common.continue" />
+          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
         </Button>
       </Box>
     </>
