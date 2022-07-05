@@ -35,7 +35,7 @@ export default function StepAmount({
       {error && <ErrorBanner error={error} />}
       <Alert
         type="primary"
-        learnMoreUrl={urls.stakingCelo}
+        learnMoreUrl={urls.celo.staking}
         learnMoreLabel={<Trans i18nKey="celo.unlock.steps.amount.learnMore" />}
         mb={4}
       >

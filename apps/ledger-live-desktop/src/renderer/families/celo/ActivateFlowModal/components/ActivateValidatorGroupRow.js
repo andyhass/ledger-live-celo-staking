@@ -59,6 +59,7 @@ function CeloActivateValidatorGroupRow({
         </IconContainer>
       }
       title={validatorGroup.name}
+      subtitle={null}
       onExternalLink={onExternalLink}
       unit={unit}
       sideInfo={

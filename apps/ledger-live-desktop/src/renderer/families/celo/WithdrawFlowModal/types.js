@@ -10,8 +10,9 @@ import type { Transaction } from "@ledgerhq/live-common/lib/families/tron/types"
 export type StepId = "amount" | "connectDevice" | "confirmation";
 
 export type StepProps = {
+  id: StepId,
   t: TFunction,
-  transitionTo: (string: StepId) => void,
+  transitionTo: (string: string) => void,
   device: ?Device,
   account: ?Account,
   parentAccount: ?Account,

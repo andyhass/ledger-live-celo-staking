@@ -66,7 +66,7 @@ export function StepConfirmationFooter({
   onClose,
   optimisticOperation,
 }: StepProps) {
-  const account = useSelector(s => accountSelector(s, { accountId: initialAccount.id }));
+  const account = useSelector(s => accountSelector(s, { accountId: initialAccount?.id }));
 
   const goToOperationDetails = useCallback(() => {
     onClose();

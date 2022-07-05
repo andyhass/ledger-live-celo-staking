@@ -63,8 +63,8 @@ export function StepValidatorGroupFooter({
 }: StepProps) {
   invariant(account, "account required");
 
-  const canNext = !bridgePending && transaction.recipient;
-  const displayTC = isDefaultValidatorGroupAddress(transaction.recipient);
+  const canNext = !bridgePending && transaction?.recipient;
+  const displayTC = isDefaultValidatorGroupAddress(transaction?.recipient);
 
   return (
     <>

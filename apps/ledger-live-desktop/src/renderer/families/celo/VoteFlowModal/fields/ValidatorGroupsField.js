@@ -75,6 +75,7 @@ const ValidatorGroupsField = ({
           data={showAll ? validatorGroups : [chosenValidatorGroup ?? validatorGroups[0]]}
           style={{ flex: showAll ? "1 0 240px" : "1 0 56px", marginBottom: 0, paddingLeft: 0 }}
           renderItem={renderItem}
+          noResultPlaceholder={null}
         />
       </Box>
       <SeeAllButton expanded={showAll} onClick={() => setShowAll(shown => !shown)}>

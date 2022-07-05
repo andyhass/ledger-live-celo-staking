@@ -60,6 +60,7 @@ function CeloValidatorGroupRow({
         </IconContainer>
       }
       title={validatorGroup.name}
+      subtitle={null}
       onExternalLink={onExternalLink}
       unit={unit}
       sideInfo={
@@ -81,7 +82,7 @@ function CeloValidatorGroupRow({
           </Box>
         </Box>
       }
-    ></StyledValidatorRow>
+    />
   );
 }
 

@@ -9,7 +9,7 @@ export type StepId = "validatorGroup" | "amount" | "connectDevice" | "confirmati
 
 export type StepProps = {
   t: TFunction,
-  transitionTo: (string: StepId) => void,
+  transitionTo: (string: string) => void,
   device: ?Device,
   account: ?Account,
   parentAccount: ?Account,
