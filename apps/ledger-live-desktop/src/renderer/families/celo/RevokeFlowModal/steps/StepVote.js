@@ -7,8 +7,10 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import ErrorBanner from "~/renderer/components/ErrorBanner";
+import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import RevokeVoteRow from "../components/RevokeVoteRow";
 import type { StepProps } from "../types";
+import styled from "styled-components";
 import { useCeloPreloadData } from "@ledgerhq/live-common/lib/families/celo/react";
 import { getAccountUnit } from "@ledgerhq/live-common/lib/account";
 import {
@@ -70,27 +72,35 @@ export default function StepVote({
       <Alert type="primary" mb={4} learnMoreUrl={urls.celo.revoking}>
         <Trans i18nKey="celo.revoke.steps.vote.info" />
       </Alert>
-      <Box vertical>
-        {mappedVotes.map(({ vote, validatorGroup }) => {
-          const active =
-            transaction.recipient === validatorGroup.address && transaction.index === vote.index;
-          return (
-            <RevokeVoteRow
-              currency={account.currency}
-              active={active}
-              onClick={() => onChange(validatorGroup.address, vote.index)}
-              key={validatorGroup.address + vote.index}
-              validatorGroup={validatorGroup}
-              unit={unit}
-              amount={vote.amount}
-              type={vote.type}
-            ></RevokeVoteRow>
-          );
-        })}
-      </Box>
+      <ValidatorsFieldContainer vertical scroll>
+        <Box p={1}>
+          {mappedVotes.map(({ vote, validatorGroup }) => {
+            const active =
+              transaction.recipient === validatorGroup.address && transaction.index === vote.index;
+            return (
+              <RevokeVoteRow
+                currency={account.currency}
+                active={active}
+                onClick={() => onChange(validatorGroup.address, vote.index)}
+                key={validatorGroup.address + vote.index}
+                validatorGroup={validatorGroup}
+                unit={unit}
+                amount={vote.amount}
+                type={vote.type}
+              ></RevokeVoteRow>
+            );
+          })}
+        </Box>
+      </ValidatorsFieldContainer>
     </Box>
   );
 }
+
+const ValidatorsFieldContainer: ThemedComponent<{}> = styled(Box)`
+  border: 1px solid ${p => p.theme.colors.palette.divider};
+  border-radius: 4px;
+  height: 270px;
+`;
 
 export function StepVoteFooter({
   transitionTo,
@@ -101,7 +111,7 @@ export function StepVoteFooter({
 }: StepProps) {
   invariant(account, "account required");
 
-  const canNext = !bridgePending && transaction.recipient && transaction.index != null;
+  const canNext = !bridgePending && transaction?.recipient && transaction?.index != null;
 
   return (
     <>
