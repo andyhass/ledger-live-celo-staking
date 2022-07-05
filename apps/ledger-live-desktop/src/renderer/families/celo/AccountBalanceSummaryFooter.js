@@ -68,7 +68,7 @@ const AccountBalanceSummaryFooter = ({ account, countervalue }: Props) => {
   if (!account.celoResources) return null;
 
   const { spendableBalance, celoResources } = account;
-  const { lockedBalance } = celoResources;
+  const { lockedBalance, nonvotingLockedBalance } = celoResources;
 
   const _withdrawableBalance = withdrawableBalance(account);
 
@@ -84,6 +84,11 @@ const AccountBalanceSummaryFooter = ({ account, countervalue }: Props) => {
 
   const formattedSpendableBalance = formatCurrencyUnit(unit, spendableBalance, formatConfig);
   const formattedLockedBalance = formatCurrencyUnit(unit, lockedBalance, formatConfig);
+  const formattedNonvotingLockedBalance = formatCurrencyUnit(
+    unit,
+    nonvotingLockedBalance,
+    formatConfig,
+  );
   const formattedWithdrawableBalance = formatCurrencyUnit(unit, _withdrawableBalance, formatConfig);
 
   return (
@@ -113,6 +118,21 @@ const AccountBalanceSummaryFooter = ({ account, countervalue }: Props) => {
           </ToolTip>
           <AmountValue>
             <Discreet>{formattedLockedBalance}</Discreet>
+          </AmountValue>
+        </BalanceDetail>
+      )}
+      {nonvotingLockedBalance.gt(0) && (
+        <BalanceDetail>
+          <ToolTip content={<Trans i18nKey="celo.nonvotingLockedTooltip" />}>
+            <TitleWrapper>
+              <Title>
+                <Trans i18nKey="celo.nonvotingLockedBalance" />
+              </Title>
+              <InfoCircle size={13} />
+            </TitleWrapper>
+          </ToolTip>
+          <AmountValue>
+            <Discreet>{formattedNonvotingLockedBalance}</Discreet>
           </AmountValue>
         </BalanceDetail>
       )}
