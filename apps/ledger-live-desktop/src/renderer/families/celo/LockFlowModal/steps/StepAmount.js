@@ -31,7 +31,7 @@ export default function StepAmount({
     <Box flow={1}>
       <SyncSkipUnderPriority priority={100} />
       {error && <ErrorBanner error={error} />}
-      <Alert type="primary" mb={4} learnMoreUrl={urls.celo.staking}>
+      <Alert type="primary" mb={4} learnMoreUrl={urls.celo.learnMore}>
         <Trans i18nKey="celo.lock.steps.amount.info" />
       </Alert>
       <AmountField

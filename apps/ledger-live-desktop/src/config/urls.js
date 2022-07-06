@@ -219,12 +219,9 @@ export const urls = {
     supportArticleLink:
       "https://launchbadge.com/blog/using-a-ledger-nano-to-create-your-hedera-account",
   },
-  // TODO: replace with real links when available
   celo: {
     ledgerByFigmentTC: "https://drive.google.com/file/d/1vlIh2gTwtbMon8_bzFQGjCLhTUqS5uQc",
-    staking:
-      "https://www.ledger.com/staking-celo?utm_source=ledger_live_desktop&utm_medium=self_referral&utm_content=celo",
-    revoking:
-      "https://www.ledger.com/staking-celo?utm_source=ledger_live_desktop&utm_medium=self_referral&utm_content=celo",
+    learnMore:
+      "https://support.ledger.com/hc/en-us/articles/360020499920-Celo-CELO-?utm_source=ledger_live_desktop&utm_medium=self_referral&utm_content=celo",
   },
 };
