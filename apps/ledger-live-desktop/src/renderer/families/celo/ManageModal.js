@@ -13,7 +13,8 @@ import Modal, { ModalBody } from "~/renderer/components/Modal";
 import BondIcon from "~/renderer/icons/LinkIcon";
 import UnbondIcon from "~/renderer/icons/Undelegate";
 import NominateIcon from "~/renderer/icons/Vote";
-import WithdrawUnbondedIcon from "~/renderer/icons/Coins";
+import RevokeIcon from "~/renderer/icons/VoteNay";
+import ClaimRewardIcon from "~/renderer/icons/ClaimReward";
 
 import Text from "~/renderer/components/Text";
 import invariant from "invariant";
@@ -203,7 +204,7 @@ const ManageModal = ({ name, account, ...rest }: Props) => {
                   onClick={() => onSelectAction(onClose, "MODAL_CELO_REVOKE")}
                 >
                   <IconWrapper>
-                    <NominateIcon size={16} />
+                    <RevokeIcon size={16} />
                   </IconWrapper>
                   <InfoWrapper>
                     <Title>
@@ -239,7 +240,7 @@ const ManageModal = ({ name, account, ...rest }: Props) => {
                   }
                 >
                   <IconWrapper>
-                    <WithdrawUnbondedIcon size={16} />
+                    <ClaimRewardIcon size={16} />
                   </IconWrapper>
                   <InfoWrapper>
                     <Title>

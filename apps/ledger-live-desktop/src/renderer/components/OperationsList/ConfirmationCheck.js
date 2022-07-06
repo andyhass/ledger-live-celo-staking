@@ -122,11 +122,11 @@ const iconsComponent = {
   CHILL: VoteNay,
   REWARD_PAYOUT: ClaimRewards,
   SET_CONTROLLER: IconSend,
-  LOCK: Freeze,
-  UNLOCK: Unfreeze,
-  WITHDRAW: IconCoins,
-  REVOKE: IconUndelegate,
-  ACTIVATE: ClaimRewards,
+  LOCK: IconLink,
+  UNLOCK: IconUndelegate,
+  WITHDRAW: ClaimRewards,
+  REVOKE: VoteNay,
+  ACTIVATE: Vote,
   REGISTER: IconPlus,
 };
 
