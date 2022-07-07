@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { urls } from "~/config/urls";
 import { openModal } from "~/renderer/actions/modals";
+import Alert from "~/renderer/components/Alert";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import LinkWithExternalIcon from "~/renderer/components/LinkWithExternalIcon";
@@ -35,7 +36,6 @@ const Wrapper = styled(Box).attrs(() => ({
 const Vote = ({ account }: Props) => {
   const { celoResources } = account;
   invariant(celoResources, "celo account and resources expected");
-
   const dispatch = useDispatch();
 
   const { votes } = celoResources;
@@ -51,6 +51,22 @@ const Vote = ({ account }: Props) => {
   const onDelegate = useCallback(() => {
     dispatch(
       openModal("MODAL_CELO_VOTE", {
+        account,
+      }),
+    );
+  }, [account, dispatch]);
+
+  const onActivate = useCallback(() => {
+    dispatch(
+      openModal("MODAL_CELO_ACTIVATE", {
+        account,
+      }),
+    );
+  }, [account, dispatch]);
+
+  const onWithdraw = useCallback(() => {
+    dispatch(
+      openModal("MODAL_CELO_WITHDRAW", {
         account,
       }),
     );
@@ -85,6 +101,30 @@ const Vote = ({ account }: Props) => {
 
   return (
     <>
+      {!!celoResources.pendingWithdrawals && (
+        <Alert
+          type="warning"
+          learnMoreLabel={<Trans i18nKey="celo.withdraw.title" />}
+          learnMoreOnRight
+          onLearnMore={onWithdraw}
+          learnMoreIsInternal={true}
+          mb={3}
+        >
+          <Trans i18nKey={`celo.alerts.withdrawableAssets`} />
+        </Alert>
+      )}
+      {celoResources.nonvotingLockedBalance.gt(0) && (
+        <Alert
+          type="warning"
+          learnMoreLabel={<Trans i18nKey="celo.activate.title" />}
+          learnMoreOnRight
+          onLearnMore={onActivate}
+          learnMoreIsInternal={true}
+          mb={3}
+        >
+          <Trans i18nKey={`celo.alerts.activatableVotes`} />
+        </Alert>
+      )}
       <TableContainer mb={6}>
         <TableHeader title={<Trans i18nKey="celo.delegation.listHeader" />}>
           <Button

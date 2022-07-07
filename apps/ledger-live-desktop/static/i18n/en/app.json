@@ -2274,7 +2274,7 @@
       }
     },
     "activate": {
-      "title": "Activate vote",
+      "title": "Activate votes",
       "steps": {
         "vote": {
           "title": "Vote"
@@ -2322,6 +2322,10 @@
           "info": "Only revokable votes are shown on this modal"
         }
       }
+    },
+    "alerts": {
+      "withdrawableAssets": "Assets you recently unlocked can now be withdrawn.",
+      "activatableVotes": "You have votes that can now be activated."
     }
   },
   "cosmos": {

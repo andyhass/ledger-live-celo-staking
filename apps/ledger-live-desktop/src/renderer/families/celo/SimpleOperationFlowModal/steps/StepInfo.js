@@ -5,7 +5,6 @@ import { Trans } from "react-i18next";
 
 import type { StepProps } from "../types";
 
-import { urls } from "~/config/urls";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
