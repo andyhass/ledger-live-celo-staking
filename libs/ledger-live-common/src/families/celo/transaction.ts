@@ -8,10 +8,14 @@ import type { Account } from "../../types";
 import { getAccountUnit } from "../../account";
 import { formatCurrencyUnit } from "../../currencies";
 export const formatTransaction = (t: Transaction, account: Account): string => `
-SEND ${formatCurrencyUnit(getAccountUnit(account), t.amount, {
-  showCode: true,
-  disableRounding: true,
-})}
+SEND ${
+  t.useAllAmount
+    ? "MAX CELO"
+    : formatCurrencyUnit(getAccountUnit(account), t.amount, {
+        showCode: true,
+        disableRounding: true,
+      })
+}
 TO ${t.recipient}`;
 
 const fromTransactionRaw = (tr: TransactionRaw): Transaction => {
