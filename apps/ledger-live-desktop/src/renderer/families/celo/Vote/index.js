@@ -20,7 +20,10 @@ import { openURL } from "~/renderer/linking";
 import { Header } from "./Header";
 import { Row } from "./Row";
 import { CeloVote } from "@ledgerhq/live-common/lib/families/celo/types";
-
+import {
+  availablePendingWithdrawals,
+  activatableVotes,
+} from "@ledgerhq/live-common/lib/families/celo/logic";
 type Props = {
   account: Account,
 };
@@ -85,6 +88,8 @@ const Vote = ({ account }: Props) => {
   );
 
   const explorerView = getDefaultExplorerView(account.currency);
+  const withdrawEnabled = availablePendingWithdrawals(account).length;
+  const activatingEnabled = activatableVotes(account).length;
 
   const onExternalLink = useCallback(
     (vote: CeloVote) => {
@@ -101,7 +106,7 @@ const Vote = ({ account }: Props) => {
 
   return (
     <>
-      {!!celoResources.pendingWithdrawals && (
+      {!!withdrawEnabled && (
         <Alert
           type="warning"
           learnMoreLabel={<Trans i18nKey="celo.withdraw.title" />}
@@ -113,7 +118,7 @@ const Vote = ({ account }: Props) => {
           <Trans i18nKey={`celo.alerts.withdrawableAssets`} />
         </Alert>
       )}
-      {celoResources.nonvotingLockedBalance.gt(0) && (
+      {!!activatingEnabled && (
         <Alert
           type="warning"
           learnMoreLabel={<Trans i18nKey="celo.activate.title" />}

@@ -112,7 +112,7 @@ export function Row({ account, vote, onManageAction, onExternalLink }: Props) {
   const formatAmount = (amount: number) => {
     const unit = getAccountUnit(account);
     return formatCurrencyUnit(unit, new BigNumber(amount), {
-      disableRounding: true,
+      disableRounding: false,
       alwaysShowSign: false,
       showCode: true,
     });

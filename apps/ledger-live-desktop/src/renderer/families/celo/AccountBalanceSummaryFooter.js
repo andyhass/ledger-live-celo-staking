@@ -106,51 +106,45 @@ const AccountBalanceSummaryFooter = ({ account, countervalue }: Props) => {
           <Discreet>{formattedSpendableBalance}</Discreet>
         </AmountValue>
       </BalanceDetail>
-      {lockedBalance.gt(0) && (
-        <BalanceDetail>
-          <ToolTip content={<Trans i18nKey="celo.lockedTooltip" />}>
-            <TitleWrapper>
-              <Title>
-                <Trans i18nKey="celo.lockedBalance" />
-              </Title>
-              <InfoCircle size={13} />
-            </TitleWrapper>
-          </ToolTip>
-          <AmountValue>
-            <Discreet>{formattedLockedBalance}</Discreet>
-          </AmountValue>
-        </BalanceDetail>
-      )}
-      {nonvotingLockedBalance.gt(0) && (
-        <BalanceDetail>
-          <ToolTip content={<Trans i18nKey="celo.nonvotingLockedTooltip" />}>
-            <TitleWrapper>
-              <Title>
-                <Trans i18nKey="celo.nonvotingLockedBalance" />
-              </Title>
-              <InfoCircle size={13} />
-            </TitleWrapper>
-          </ToolTip>
-          <AmountValue>
-            <Discreet>{formattedNonvotingLockedBalance}</Discreet>
-          </AmountValue>
-        </BalanceDetail>
-      )}
-      {_withdrawableBalance.gt(0) && (
-        <BalanceDetail>
-          <ToolTip content={<Trans i18nKey="celo.withdrawableTooltip" />}>
-            <TitleWrapper>
-              <Title>
-                <Trans i18nKey="celo.withdrawableBalance" />
-              </Title>
-              <InfoCircle size={13} />
-            </TitleWrapper>
-          </ToolTip>
-          <AmountValue>
-            <Discreet>{formattedWithdrawableBalance}</Discreet>
-          </AmountValue>
-        </BalanceDetail>
-      )}
+      <BalanceDetail>
+        <ToolTip content={<Trans i18nKey="celo.lockedTooltip" />}>
+          <TitleWrapper>
+            <Title>
+              <Trans i18nKey="celo.lockedBalance" />
+            </Title>
+            <InfoCircle size={13} />
+          </TitleWrapper>
+        </ToolTip>
+        <AmountValue>
+          <Discreet>{formattedLockedBalance}</Discreet>
+        </AmountValue>
+      </BalanceDetail>
+      <BalanceDetail>
+        <ToolTip content={<Trans i18nKey="celo.nonvotingLockedTooltip" />}>
+          <TitleWrapper>
+            <Title>
+              <Trans i18nKey="celo.nonvotingLockedBalance" />
+            </Title>
+            <InfoCircle size={13} />
+          </TitleWrapper>
+        </ToolTip>
+        <AmountValue>
+          <Discreet>{formattedNonvotingLockedBalance}</Discreet>
+        </AmountValue>
+      </BalanceDetail>
+      <BalanceDetail>
+        <ToolTip content={<Trans i18nKey="celo.withdrawableTooltip" />}>
+          <TitleWrapper>
+            <Title>
+              <Trans i18nKey="celo.withdrawableBalance" />
+            </Title>
+            <InfoCircle size={13} />
+          </TitleWrapper>
+        </ToolTip>
+        <AmountValue>
+          <Discreet>{formattedWithdrawableBalance}</Discreet>
+        </AmountValue>
+      </BalanceDetail>
     </Wrapper>
   );
 };

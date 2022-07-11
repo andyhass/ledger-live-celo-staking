@@ -2324,7 +2324,7 @@
       }
     },
     "alerts": {
-      "withdrawableAssets": "Assets you recently unlocked can now be withdrawn.",
+      "withdrawableAssets": "You have a withdrawable balance",
       "activatableVotes": "You have votes that can now be activated."
     }
   },
