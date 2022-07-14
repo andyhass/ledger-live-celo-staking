@@ -45,7 +45,7 @@ const Vote = ({ account }: Props) => {
 
   const onEarnRewards = useCallback(() => {
     dispatch(
-      openModal("MODAL_CELO_VOTE", {
+      openModal("MODAL_CELO_REWARDS_INFO", {
         account,
       }),
     );
@@ -131,22 +131,7 @@ const Vote = ({ account }: Props) => {
         </Alert>
       )}
       <TableContainer mb={6}>
-        <TableHeader title={<Trans i18nKey="celo.delegation.listHeader" />}>
-          <Button
-            id={"account-delegate-button"}
-            mr={2}
-            color="palette.primary.main"
-            small
-            onClick={onDelegate}
-          >
-            <Box horizontal flow={1} alignItems="center">
-              <DelegateIcon size={12} />
-              <Box>
-                <Trans i18nKey="celo.delegation.add" />
-              </Box>
-            </Box>
-          </Button>
-        </TableHeader>
+        <TableHeader title={<Trans i18nKey="celo.delegation.listHeader" />} />
         {hasVotes ? (
           <>
             <Header />
