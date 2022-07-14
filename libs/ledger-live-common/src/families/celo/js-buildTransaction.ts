@@ -137,7 +137,15 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       data: celoToken
         .transfer(transaction.recipient, value.toFixed())
         .txo.encodeABI(),
-      gas: await kit.connection.estimateGasWithInflationFactor(celoTransaction),
+    };
+
+    const gas = await kit.connection.estimateGasWithInflationFactor(
+      celoTransaction
+    );
+
+    celoTransaction = {
+      ...celoTransaction,
+      gas,
     };
   }
   const tx: CeloTx = {
