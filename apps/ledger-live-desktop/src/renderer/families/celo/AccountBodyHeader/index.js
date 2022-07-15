@@ -15,7 +15,6 @@ import LinkWithExternalIcon from "~/renderer/components/LinkWithExternalIcon";
 import TableContainer, { TableHeader } from "~/renderer/components/TableContainer";
 import Text from "~/renderer/components/Text";
 import IconChartLine from "~/renderer/icons/ChartLine";
-import DelegateIcon from "~/renderer/icons/Delegate";
 import { openURL } from "~/renderer/linking";
 import { Header } from "./Header";
 import { Row } from "./Row";
@@ -24,6 +23,7 @@ import {
   availablePendingWithdrawals,
   activatableVotes,
 } from "@ledgerhq/live-common/lib/families/celo/logic";
+
 type Props = {
   account: Account,
 };
@@ -36,7 +36,7 @@ const Wrapper = styled(Box).attrs(() => ({
   align-items: center;
 `;
 
-const Vote = ({ account }: Props) => {
+const AccountBodyHeaderComponent = ({ account }: Props) => {
   const { celoResources } = account;
   invariant(celoResources, "celo account and resources expected");
   const dispatch = useDispatch();
@@ -46,14 +46,6 @@ const Vote = ({ account }: Props) => {
   const onEarnRewards = useCallback(() => {
     dispatch(
       openModal("MODAL_CELO_REWARDS_INFO", {
-        account,
-      }),
-    );
-  }, [account, dispatch]);
-
-  const onDelegate = useCallback(() => {
-    dispatch(
-      openModal("MODAL_CELO_VOTE", {
         account,
       }),
     );
@@ -178,10 +170,10 @@ const Vote = ({ account }: Props) => {
   );
 };
 
-const Votes = ({ account }: Props) => {
+const AccountBodyHeader = ({ account }: Props) => {
   if (!account.celoResources) return null;
 
-  return <Vote account={account} />;
+  return <AccountBodyHeaderComponent account={account} />;
 };
 
-export default Votes;
+export default AccountBodyHeader;

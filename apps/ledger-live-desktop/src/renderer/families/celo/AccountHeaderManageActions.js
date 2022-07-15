@@ -28,7 +28,6 @@ const Icon = (props: *) => {
 const AccountHeaderManageActions = ({ account }: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const currentTheme = useSelector(themeSelector);
 
   const onClick = useCallback(() => {
     dispatch(
