@@ -477,8 +477,6 @@ Usage: ledger-live testGetTrustedInputFromTxHash
  -c, --currency <String>
  -h, --hash <String>
 
-Usage: ledger-live celoValidatorGroups
-
 Usage: ledger-live user
 
 Usage: ledger-live version
