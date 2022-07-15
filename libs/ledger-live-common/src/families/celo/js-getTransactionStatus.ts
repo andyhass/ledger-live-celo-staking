@@ -78,9 +78,6 @@ const getTransactionStatus = async (
       errors.amount = new NotEnoughBalance();
     }
   } else if (transaction.mode === "revoke") {
-    //TODO: refactor, we fetch votes twice
-    // @pawelnguyen pawelnguyen 27 days ago
-    //  this whole file I'm planning on refactoring as well
     const revoke = getVote(account, transaction.recipient, transaction.index);
     if (revoke?.amount && amount.gt(revoke.amount))
       errors.amount = new NotEnoughBalance();
