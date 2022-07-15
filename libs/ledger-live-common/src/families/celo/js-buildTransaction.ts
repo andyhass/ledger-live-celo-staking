@@ -5,19 +5,9 @@ import { celoKit } from "./api/sdk";
 import { BigNumber } from "bignumber.js";
 import { getVote } from "./logic";
 
-// TODO: a lot of this code overlaps with getFeesForTransaction, but not all. Check if passing an extracted
-// celoTransaction from here to getFees estimateGas would work
-/**
- * 
- * here's a lot of code that I want to refactor, I haven't done it yet because I wanted to have all modes of transactions ready. A lot of code is similar but not the same so I'll need to refactor carefully, ideally by writing bot specs first
-
-@marco-figment marco-figment 17 days ago
-+1 on using the bot for each case
- */
 const buildTransaction = async (account: Account, transaction: Transaction) => {
   const kit = celoKit();
 
-  //TODO: reuse
   const value = transactionValue(account, transaction);
 
   let celoTransaction: CeloTx;
@@ -82,7 +72,6 @@ const buildTransaction = async (account: Account, transaction: Transaction) => {
       new BigNumber(value)
     );
 
-    // TODO: refactor, extract?
     const revoke = revokes.find((transactionObject) => {
       return (
         (transactionObject.txo as any)._method.name ===

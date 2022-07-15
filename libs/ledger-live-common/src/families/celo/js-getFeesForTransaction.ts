@@ -17,7 +17,6 @@ const getFeesForTransaction = async ({
   // A workaround - estimating gas throws an error if value > funds
   let value: BigNumber = new BigNumber(0);
 
-  //TODO: needs refactoring? DRY with js-buildTransaction/getTransactionStatus, pass an amount for minimum?
   if (
     (transaction.mode === "unlock" || transaction.mode === "vote") &&
     account.celoResources
@@ -78,7 +77,6 @@ const getFeesForTransaction = async ({
       new BigNumber(value)
     );
 
-    // TODO: refactor, extract?
     const revokeTx = revokeTxs.find((transactionObject) => {
       return (
         (transactionObject.txo as any)._method.name ===

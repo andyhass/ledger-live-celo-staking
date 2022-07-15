@@ -49,8 +49,6 @@ const getTransactionStatus = async (
     amount = new BigNumber(transaction.amount);
   }
 
-  //TODO: refactor?
-
   if (amount.lt(0)) amount = new BigNumber(0);
 
   if (
