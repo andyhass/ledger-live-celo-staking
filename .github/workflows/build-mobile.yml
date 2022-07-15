@@ -1,4 +1,4 @@
-name: Build Mobile App
+name: "[Build] Mobile App"
 
 on:
   push:
@@ -70,7 +70,7 @@ jobs:
           version: latest
       - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
           cache: pnpm
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: bump npm
@@ -88,7 +88,7 @@ jobs:
         uses: android-actions/setup-android@v2.0.6
       - name: install dependencies
         run: pnpm i --filter="live-mobile..." --filter="ledger-live" --no-frozen-lockfile --unsafe-perm
-      - uses: ledgerhq/actions/packages/get-package-infos@main
+      - uses: ledgerhq/ledger-live/tools/actions/get-package-infos@develop
         id: version
         with:
           path: ${{ github.workspace }}/apps/ledger-live-mobile
@@ -96,11 +96,18 @@ jobs:
         uses: ledgerhq/ledger-live/tools/actions/change-product-name@develop
         with:
           path: ${{ github.workspace }}/apps/ledger-live-mobile
-      # - name: Get short SHA
-      #   id: slug
-      #   run: echo "::set-output name=sha8::$(git rev-parse HEAD)"
-      # - name: make local version
-      #   run: yarn version --new-version=${{ steps.version.outputs.clean }}-sha.${{ steps.slug.outputs.sha8 }}
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha8::$(git rev-parse HEAD)"
+      - name: make local version
+        env:
+          VERSION: ${{ steps.version.outputs.clean }}-sha.${{ steps.slug.outputs.sha8 }}
+        run: cd apps/ledger-live-mobile && npm version $VERSION
+      - name: TurboRepo local server
+        uses: felixmosh/turborepo-gh-artifacts@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          server-token: "yolo"
       - name: build the app
         env:
           ANDROID_KEYSTORE_PASS: staging
@@ -108,17 +115,15 @@ jobs:
           ANDROID_KEY_PASS: staging
           NODE_OPTIONS: "--max-old-space-size=7168"
           ANDROID_KEYSTORE_FILE: ${{ github.workspace }}/apps/ledger-live-mobile/android/app/staging.kstr
-          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-        run: pnpm build:llm
-      # - uses: ledgerhq/actions/get-package-infos@main
-      #   id: post-version
-      #   with:
-      #     path: ${{ github.workspace }}/apps/ledger-live-mobile
+        run: pnpm build:llm:android --api="http://127.0.0.1:9080" --token="yolo" --team="foo"
+      - uses: ledgerhq/ledger-live/tools/actions/get-package-infos@develop
+        id: post-version
+        with:
+          path: ${{ github.workspace }}/apps/ledger-live-mobile
       - name: upload Android app
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.version.outputs.version }}-release
+          name: ${{ steps.post-version.outputs.version }}-release
           path: ${{ github.workspace }}/apps/ledger-live-mobile/android/app/build/outputs/apk/release
 
   build-mobile-app-android-external:
@@ -141,7 +146,7 @@ jobs:
           version: latest
       - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
           cache: pnpm
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: bump npm
@@ -159,7 +164,7 @@ jobs:
         uses: android-actions/setup-android@v2.0.6
       - name: install dependencies
         run: pnpm i --filter="live-mobile..." --filter="ledger-live" --no-frozen-lockfile --unsafe-perm
-      - uses: ledgerhq/actions/packages/get-package-infos@main
+      - uses: ledgerhq/ledger-live/tools/actions/get-package-infos@develop
         id: version
         with:
           path: ${{ github.workspace }}/apps/ledger-live-mobile
@@ -167,11 +172,18 @@ jobs:
         uses: ledgerhq/ledger-live/tools/actions/change-product-name@develop
         with:
           path: ${{ github.workspace }}/apps/ledger-live-mobile
-      # - name: Get short SHA
-      #   id: slug
-      #   run: echo "::set-output name=sha8::$(git rev-parse HEAD)"
-      # - name: make local version
-      #   run: yarn version --new-version=${{ steps.version.outputs.clean }}-sha.${{ steps.slug.outputs.sha8 }}
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha8::$(git rev-parse HEAD)"
+      - name: make local version
+        env:
+          VERSION: ${{ steps.version.outputs.clean }}-sha.${{ steps.slug.outputs.sha8 }}
+        run: cd apps/ledger-live-mobile && npm version $VERSION
+      - name: TurboRepo local server
+        uses: felixmosh/turborepo-gh-artifacts@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          server-token: "yolo"
       - name: build the app
         env:
           ANDROID_KEYSTORE_PASS: staging
@@ -179,13 +191,15 @@ jobs:
           ANDROID_KEY_PASS: staging
           NODE_OPTIONS: "--max-old-space-size=7168"
           ANDROID_KEYSTORE_FILE: ${{ github.workspace }}/apps/ledger-live-mobile/android/app/staging.kstr
-          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-        run: pnpm build:llm
+        run: pnpm build:llm:android --api="http://127.0.0.1:9080" --token="yolo" --team="foo"
+      - uses: ledgerhq/ledger-live/tools/actions/get-package-infos@develop
+        id: post-version
+        with:
+          path: ${{ github.workspace }}/apps/ledger-live-mobile
       - name: upload Android app
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.version.outputs.version }}-release
+          name: ${{ steps.post-version.outputs.version }}-release
           path: ${{ github.workspace }}/apps/ledger-live-mobile/android/app/build/outputs/apk/release
 
   build-mobile-app-ios:
@@ -204,7 +218,7 @@ jobs:
           version: latest
       - uses: actions/setup-node@v3
         with:
-          node-version: 14.x
+          node-version: 16.x
           cache: pnpm
           cache-dependency-path: "**/pnpm-lock.yaml"
       - name: bump npm
