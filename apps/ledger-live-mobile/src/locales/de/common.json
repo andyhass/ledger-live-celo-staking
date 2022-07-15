@@ -1541,12 +1541,7 @@
       "WITHDRAW_UNBONDED": "Abhebung",
       "NOMINATE": "Nominierung",
       "CHILL": "Nominierungen löschen",
-      "SET_CONTROLLER": "Controller einstellen",
-      "ACTIVATE": "Activated",
-      "LOCK": "Locked",
-      "UNLOCK": "Unlocked",
-      "REVOKE": "Revoked",
-      "REGISTER": "Registered"
+      "SET_CONTROLLER": "Controller einstellen"
     }
   },
   "operationDetails": {

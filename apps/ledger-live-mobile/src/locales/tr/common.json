@@ -1541,12 +1541,7 @@
       "WITHDRAW_UNBONDED": "Çekim",
       "NOMINATE": "Adaylık",
       "CHILL": "Adaylıkları temizle",
-      "SET_CONTROLLER": "Denetleyici belirle",
-      "ACTIVATE": "Activated",
-      "LOCK": "Locked",
-      "UNLOCK": "Unlocked",
-      "REVOKE": "Revoked",
-      "REGISTER": "Registered"
+      "SET_CONTROLLER": "Denetleyici belirle"
     }
   },
   "operationDetails": {

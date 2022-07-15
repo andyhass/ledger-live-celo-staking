@@ -1541,12 +1541,7 @@
       "WITHDRAW_UNBONDED": "سحب",
       "NOMINATE": "ترشيح",
       "CHILL": "مسح الترشيحات",
-      "SET_CONTROLLER": "إعداد وحدة التحكم",
-      "ACTIVATE": "Activated",
-      "LOCK": "Locked",
-      "UNLOCK": "Unlocked",
-      "REVOKE": "Revoked",
-      "REGISTER": "Registered"
+      "SET_CONTROLLER": "إعداد وحدة التحكم"
     }
   },
   "operationDetails": {

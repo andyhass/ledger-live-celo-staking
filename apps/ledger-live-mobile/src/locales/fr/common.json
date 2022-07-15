@@ -1541,12 +1541,7 @@
       "WITHDRAW_UNBONDED": "Retrait",
       "NOMINATE": "Nomination",
       "CHILL": "Retirer les nominations",
-      "SET_CONTROLLER": "Définir contrôleur",
-      "ACTIVATE": "Activated",
-      "LOCK": "Locked",
-      "UNLOCK": "Unlocked",
-      "REVOKE": "Revoked",
-      "REGISTER": "Registered"
+      "SET_CONTROLLER": "Définir contrôleur"
     }
   },
   "operationDetails": {
