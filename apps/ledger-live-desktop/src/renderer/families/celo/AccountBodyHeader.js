@@ -1,5 +1,5 @@
 // @flow
 
-import Vote from "./Vote";
+import AccountBodyHeader from "./AccountBodyHeader";
 
-export default Vote;
+export default AccountBodyHeader;
