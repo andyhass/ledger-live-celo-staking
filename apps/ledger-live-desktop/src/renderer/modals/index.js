@@ -68,7 +68,7 @@ import MODAL_SOLANA_DELEGATION_DEACTIVATE from "../families/solana/DelegationDea
 import MODAL_SOLANA_DELEGATION_REACTIVATE from "../families/solana/DelegationReactivateFlowModal";
 import MODAL_SOLANA_DELEGATION_WITHDRAW from "../families/solana/DelegationWithdrawFlowModal";
 
-import MODAL_CELO_REWARDS_INFO from "../families/celo/Info";
+import MODAL_CELO_REWARDS_INFO from "../families/celo/EarnRewardsInfoModal";
 import MODAL_CELO_MANAGE from "../families/celo/ManageModal";
 import MODAL_CELO_LOCK from "../families/celo/LockFlowModal";
 import MODAL_CELO_UNLOCK from "../families/celo/UnlockFlowModal";

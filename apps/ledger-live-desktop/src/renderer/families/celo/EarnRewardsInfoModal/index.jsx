@@ -16,7 +16,7 @@ type Props = {
   parentAccount: ?Account,
 };
 
-export default function CeloEarnRewardsInfoModal({ name, account, parentAccount }: Props) {
+const CeloEarnRewardsInfoModal = ({ name, account, parentAccount }: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -58,4 +58,6 @@ export default function CeloEarnRewardsInfoModal({ name, account, parentAccount 
       footerLeft={<LinkWithExternalIcon label={t("delegation.howItWorks")} onClick={onLearnMore} />}
     />
   );
-}
+};
+
+export default CeloEarnRewardsInfoModal;

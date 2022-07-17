@@ -16,8 +16,8 @@ import TableContainer, { TableHeader } from "~/renderer/components/TableContaine
 import Text from "~/renderer/components/Text";
 import IconChartLine from "~/renderer/icons/ChartLine";
 import { openURL } from "~/renderer/linking";
-import { Header } from "./AccountBodyHeader/Header";
-import { Row } from "./AccountBodyHeader/Row";
+import { Header } from "./Header";
+import { Row } from "./Row";
 import type { CeloVote } from "@ledgerhq/live-common/families/celo/types";
 import {
   availablePendingWithdrawals,
