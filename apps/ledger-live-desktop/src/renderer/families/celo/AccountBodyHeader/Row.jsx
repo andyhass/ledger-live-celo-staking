@@ -25,6 +25,8 @@ import {
 } from "@ledgerhq/live-common/families/celo/logic";
 import Logo from "~/renderer/icons/Logo";
 import { IconContainer } from "~/renderer/components/Delegation/ValidatorRow";
+import Tooltip from "~/renderer/components/Tooltip";
+import IconInfoCircle from "~/renderer/icons/InfoCircle";
 
 const Wrapper: ThemedComponent<*> = styled.div`
   display: flex;
@@ -59,6 +61,10 @@ const Ellipsis: ThemedComponent<{}> = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+const ManageInfoIconWrapper: ThemedComponent<{}> = styled.div`
+  margin-right: 20%;
 `;
 
 const ManageDropDownItem = ({
@@ -173,6 +179,21 @@ export function Row({ account, vote, onManageAction, onExternalLink }: Props) {
               );
             }}
           </DropDown>
+        )}
+        {actions.length === 0 && (
+          <ManageInfoIconWrapper>
+            <Tooltip
+              content={
+                <Trans
+                  i18nKey={"celo.delegation.manageMultipleVoteWarning"}
+                  count={2}
+                  values={{ count: 2 }}
+                />
+              }
+            >
+              <IconInfoCircle height={16} width={16} />
+            </Tooltip>
+          </ManageInfoIconWrapper>
         )}
       </Column>
     </Wrapper>

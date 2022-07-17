@@ -2128,6 +2128,7 @@
       "listHeader": "Delegations",
       "add": "Add",
       "validatorGroup": "Validator Group",
+      "manageMultipleVoteWarning": "You need to Activate or Revoke other votes in the same validator group before managing this vote.",
       "actions": {
         "activate": "Activate",
         "revoke": "Revoke"
