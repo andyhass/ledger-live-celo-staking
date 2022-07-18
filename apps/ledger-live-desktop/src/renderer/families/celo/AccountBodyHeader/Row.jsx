@@ -1,21 +1,16 @@
 // @flow
+
 import { getAccountUnit } from "@ledgerhq/live-common/account/index";
 import { formatCurrencyUnit } from "@ledgerhq/live-common/currencies/index";
 import type { Account } from "@ledgerhq/live-common/types";
 import { BigNumber } from "bignumber.js";
 import React, { useCallback, useMemo } from "react";
 import { Trans } from "react-i18next";
-import styled from "styled-components";
 import Box from "~/renderer/components/Box/Box";
-import DropDown, { DropDownItem } from "~/renderer/components/DropDownSelector";
 import FirstLetterIcon from "~/renderer/components/FirstLetterIcon";
-import Text from "~/renderer/components/Text";
 import ToolTip from "~/renderer/components/Tooltip";
 import CheckCircle from "~/renderer/icons/CheckCircle";
-import ChevronRight from "~/renderer/icons/ChevronRight";
 import Loader from "~/renderer/icons/Loader";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
-import { TableLine } from "./Header";
 import type { CeloVote } from "@ledgerhq/live-common/families/celo/types";
 import { useCeloPreloadData } from "@ledgerhq/live-common/families/celo/react";
 import {
@@ -27,64 +22,25 @@ import Logo from "~/renderer/icons/Logo";
 import { IconContainer } from "~/renderer/components/Delegation/ValidatorRow";
 import Tooltip from "~/renderer/components/Tooltip";
 import IconInfoCircle from "~/renderer/icons/InfoCircle";
+import * as S from "./Row.styles";
+import ManageDropDown from "./ManageDropDown";
 
-const Wrapper: ThemedComponent<*> = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 16px 20px;
-`;
+const voteActions = vote => {
+  const actions = [];
 
-const Column: ThemedComponent<{ clickable?: boolean }> = styled(TableLine).attrs(p => ({
-  ff: "Inter|SemiBold",
-  color: p.strong ? "palette.text.shade100" : "palette.text.shade80",
-  fontSize: 3,
-}))`
-  cursor: ${p => (p.clickable ? "pointer" : "cursor")};
-  ${IconContainer} {
-    color: ${p => p.theme.colors.palette.text.shade80};
-    opacity: 1;
-  }
-  ${p =>
-    p.clickable
-      ? `
-    &:hover {
-      color: ${p.theme.colors.palette.primary.main};
-    }
-    `
-      : ``}
-`;
+  if (vote.activatable)
+    actions.push({
+      key: "MODAL_CELO_ACTIVATE",
+      label: <Trans i18nKey="celo.delegation.actions.activate" />,
+    });
 
-const Ellipsis: ThemedComponent<{}> = styled.div`
-  flex: 1;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
+  if (vote.revokable)
+    actions.push({
+      key: "MODAL_CELO_REVOKE",
+      label: <Trans i18nKey="celo.delegation.actions.revoke" />,
+    });
 
-const ManageInfoIconWrapper: ThemedComponent<{}> = styled.div`
-  margin-right: 20%;
-`;
-
-const ManageDropDownItem = ({
-  item,
-  isActive,
-}: {
-  item: { key: string, label: string, disabled: boolean, tooltip: React$Node },
-  isActive: boolean,
-}) => {
-  return (
-    <>
-      <ToolTip content={item.tooltip} containerStyle={{ width: "100%" }}>
-        <DropDownItem disabled={item.disabled} isActive={isActive}>
-          <Box horizontal alignItems="center" justifyContent="center">
-            <Text ff="Inter|SemiBold">{item.label}</Text>
-          </Box>
-        </DropDownItem>
-      </ToolTip>
-    </>
-  );
+  return actions;
 };
 
 type Props = {
@@ -94,7 +50,7 @@ type Props = {
   onExternalLink: (address: string) => void,
 };
 
-export function Row({ account, vote, onManageAction, onExternalLink }: Props) {
+export const Row = ({ account, vote, onManageAction, onExternalLink }: Props) => {
   const onSelect = useCallback(
     action => {
       onManageAction(vote, action.key);
@@ -125,8 +81,8 @@ export function Row({ account, vote, onManageAction, onExternalLink }: Props) {
   };
 
   return (
-    <Wrapper>
-      <Column strong clickable onClick={onExternalLinkClick}>
+    <S.Wrapper>
+      <S.Column strong clickable onClick={onExternalLinkClick}>
         <Box mr={1}>
           <IconContainer isSR>
             {isDefaultValidatorGroup(validatorGroup) ? (
@@ -136,9 +92,9 @@ export function Row({ account, vote, onManageAction, onExternalLink }: Props) {
             )}
           </IconContainer>
         </Box>
-        <Ellipsis>{validatorGroup.name}</Ellipsis>
-      </Column>
-      <Column>
+        <S.Ellipsis>{validatorGroup.name}</S.Ellipsis>
+      </S.Column>
+      <S.Column>
         {status === "active" && (
           <Box color="positiveGreen">
             <ToolTip content={<Trans i18nKey="celo.delegation.activeTooltip" />}>
@@ -163,25 +119,12 @@ export function Row({ account, vote, onManageAction, onExternalLink }: Props) {
         <Box ml={1}>
           <Trans i18nKey={`celo.revoke.steps.vote.${status}`} />
         </Box>
-      </Column>
-      <Column>{formatAmount(vote.amount ?? 0)}</Column>
-      <Column>
-        {actions.length > 0 && (
-          <DropDown items={actions} renderItem={ManageDropDownItem} onChange={onSelect}>
-            {({ isOpen, value }) => {
-              return (
-                <Box flex horizontal alignItems="center">
-                  <Trans i18nKey="common.manage" />
-                  <div style={{ transform: "rotate(90deg)" }}>
-                    <ChevronRight size={16} />
-                  </div>
-                </Box>
-              );
-            }}
-          </DropDown>
-        )}
+      </S.Column>
+      <S.Column>{formatAmount(vote.amount ?? 0)}</S.Column>
+      <S.Column>
+        {actions.length > 0 && <ManageDropDown actions={actions} onSelect={onSelect} />}
         {actions.length === 0 && (
-          <ManageInfoIconWrapper>
+          <S.ManageInfoIconWrapper>
             <Tooltip
               content={
                 <Trans
@@ -193,27 +136,9 @@ export function Row({ account, vote, onManageAction, onExternalLink }: Props) {
             >
               <IconInfoCircle height={16} width={16} />
             </Tooltip>
-          </ManageInfoIconWrapper>
+          </S.ManageInfoIconWrapper>
         )}
-      </Column>
-    </Wrapper>
+      </S.Column>
+    </S.Wrapper>
   );
-}
-
-function voteActions(vote) {
-  const actions = [];
-
-  if (vote.activatable)
-    actions.push({
-      key: "MODAL_CELO_ACTIVATE",
-      label: <Trans i18nKey="celo.delegation.actions.activate" />,
-    });
-
-  if (vote.revokable)
-    actions.push({
-      key: "MODAL_CELO_REVOKE",
-      label: <Trans i18nKey="celo.delegation.actions.revoke" />,
-    });
-
-  return actions;
-}
+};

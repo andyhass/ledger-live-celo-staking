@@ -1,11 +1,11 @@
 // @flow
+
 import { getAddressExplorer, getDefaultExplorerView } from "@ledgerhq/live-common/explorers";
 import type { Account } from "@ledgerhq/live-common/types";
 import invariant from "invariant";
 import React, { useCallback } from "react";
 import { Trans } from "react-i18next";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
 import { urls } from "~/config/urls";
 import { openModal } from "~/renderer/actions/modals";
 import Alert from "~/renderer/components/Alert";
@@ -23,18 +23,11 @@ import {
   availablePendingWithdrawals,
   activatableVotes,
 } from "@ledgerhq/live-common/families/celo/logic";
+import * as S from "./AccountBodyHeader.styles";
 
 type Props = {
   account: Account,
 };
-
-const Wrapper = styled(Box).attrs(() => ({
-  p: 3,
-}))`
-  border-radius: 4px;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 const AccountBodyHeaderComponent = ({ account }: Props) => {
   const { celoResources } = account;
@@ -138,7 +131,7 @@ const AccountBodyHeaderComponent = ({ account }: Props) => {
             ))}
           </>
         ) : (
-          <Wrapper horizontal>
+          <S.Wrapper horizontal>
             <Box style={{ maxWidth: "65%" }}>
               <Text ff="Inter|Medium|SemiBold" color="palette.text.shade60" fontSize={4}>
                 <Trans
@@ -163,7 +156,7 @@ const AccountBodyHeaderComponent = ({ account }: Props) => {
                 </Box>
               </Button>
             </Box>
-          </Wrapper>
+          </S.Wrapper>
         )}
       </TableContainer>
     </>

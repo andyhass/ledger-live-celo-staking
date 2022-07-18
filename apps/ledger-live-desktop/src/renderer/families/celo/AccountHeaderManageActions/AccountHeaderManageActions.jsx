@@ -1,9 +1,8 @@
 // @flow
+
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-
 import type { Account } from "@ledgerhq/live-common/types";
-
 import { openModal } from "~/renderer/actions/modals";
 import { useTranslation } from "react-i18next";
 import Icon from "./Icon";

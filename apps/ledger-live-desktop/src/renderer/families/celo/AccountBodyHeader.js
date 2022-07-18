@@ -1,2 +1,3 @@
 // @flow
-export { default } from "./AccountBodyHeader/index";
+
+export { default } from "./AccountBodyHeader/AccountBodyHeader";
