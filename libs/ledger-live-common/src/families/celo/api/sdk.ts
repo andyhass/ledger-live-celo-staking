@@ -12,7 +12,9 @@ export const celoKit = () => {
 /**
  * Fetch account registered status. To lock any Celo, account needs to be registered first
  */
-export const getAccountRegistrationStatus = async (address: string): Promise<boolean> => {
+export const getAccountRegistrationStatus = async (
+  address: string
+): Promise<boolean> => {
   const accounts = await celoKit().contracts.getAccounts();
   return await accounts.isAccount(address);
 };
