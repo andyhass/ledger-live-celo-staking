@@ -35,6 +35,7 @@ const CeloEarnRewardsInfoModal = ({ name, account, parentAccount }: Props) => {
         openModal("MODAL_CELO_SIMPLE_OPERATION", {
           parentAccount,
           account,
+          mode: "register",
         }),
       );
     }

@@ -74,13 +74,12 @@ const steps: Array<St> = [
   },
 ];
 
-// returns the first error
-function getStatusError(status, type = "errors"): ?Error {
+const getStatusError = (status, type = "errors"): ?Error => {
   if (!status || !status[type]) return null;
   const firstKey = Object.keys(status[type])[0];
 
   return firstKey ? status[type][firstKey] : null;
-}
+};
 
 const mapStateToProps = createStructuredSelector({
   device: getCurrentDevice,
