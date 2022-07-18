@@ -1,22 +1,20 @@
 // @flow
+
 import { formatCurrencyUnit } from "@ledgerhq/live-common/currencies/index";
 import { getAddressExplorer, getDefaultExplorerView } from "@ledgerhq/live-common/explorers";
-import type { CeloValidatorGroup } from "@ledgerhq/live-common/families/celo/types";
-import type { CryptoCurrency, Unit } from "@ledgerhq/live-common/types";
 import { BigNumber } from "bignumber.js";
 import React, { useCallback } from "react";
 import { Trans } from "react-i18next";
-import styled from "styled-components";
 import Box from "~/renderer/components/Box";
-import type { ValidatorRowProps } from "~/renderer/components/Delegation/ValidatorRow";
-import ValidatorRow, { IconContainer } from "~/renderer/components/Delegation/ValidatorRow";
+import { IconContainer } from "~/renderer/components/Delegation/ValidatorRow";
 import FirstLetterIcon from "~/renderer/components/FirstLetterIcon";
 import Text from "~/renderer/components/Text";
-import Check from "~/renderer/icons/Check";
 import { openURL } from "~/renderer/linking";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import Logo from "~/renderer/icons/Logo";
 import { isDefaultValidatorGroup } from "@ledgerhq/live-common/families/celo/logic";
+import * as S from "./ValidatorGroupRow.styles";
+import type { CeloValidatorGroup } from "@ledgerhq/live-common/families/celo/types";
+import type { CryptoCurrency, Unit } from "@ledgerhq/live-common/types";
 
 type Props = {
   currency: CryptoCurrency,
@@ -27,14 +25,14 @@ type Props = {
   unit: Unit,
 };
 
-function CeloValidatorGroupRow({
+const CeloValidatorGroupRow = ({
   validatorGroup,
   active,
   showStake,
   onClick,
   unit,
   currency,
-}: Props) {
+}: Props) => {
   const explorerView = getDefaultExplorerView(currency);
 
   const onExternalLink = useCallback(() => {
@@ -46,7 +44,7 @@ function CeloValidatorGroupRow({
   }, [explorerView, validatorGroup]);
 
   return (
-    <StyledValidatorRow
+    <S.StyledValidatorRow
       onClick={onClick}
       key={validatorGroup.address}
       validator={{ address: validatorGroup.address }}
@@ -78,22 +76,12 @@ function CeloValidatorGroupRow({
             </Box>
           )}
           <Box ml={3}>
-            <ChosenMark active={active ?? false} />
+            <S.ChosenMark active={active ?? false} />
           </Box>
         </Box>
       }
     />
   );
-}
-
-const StyledValidatorRow: ThemedComponent<ValidatorRowProps> = styled(ValidatorRow)`
-  border-color: transparent;
-  margin-bottom: 0;
-`;
-
-const ChosenMark: ThemedComponent<{ active: boolean }> = styled(Check).attrs(p => ({
-  color: p.active ? p.theme.colors.palette.primary.main : "transparent",
-  size: 14,
-}))``;
+};
 
 export default CeloValidatorGroupRow;

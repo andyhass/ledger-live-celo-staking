@@ -1,4 +1,5 @@
 // @flow
+
 import { getMainAccount } from "@ledgerhq/live-common/account/index";
 import React, { Fragment, PureComponent } from "react";
 import { Trans } from "react-i18next";
@@ -11,6 +12,39 @@ import SpendableBanner from "~/renderer/components/SpendableBanner";
 import AccountFooter from "~/renderer/modals/Send/AccountFooter";
 import AmountField from "~/renderer/modals/Send/fields/AmountField";
 import type { StepProps } from "../types";
+
+export class StepAmountFooter extends PureComponent<StepProps> {
+  onNext = async () => {
+    const { transitionTo } = this.props;
+    transitionTo("connectDevice");
+  };
+
+  render() {
+    const { account, parentAccount, status, bridgePending } = this.props;
+    const { errors } = status;
+    if (!account) return null;
+
+    const mainAccount = getMainAccount(account, parentAccount);
+    const isTerminated = mainAccount.currency.terminated;
+    const hasErrors = Object.keys(errors).length;
+    const canNext = !bridgePending && !hasErrors && !isTerminated;
+
+    return (
+      <>
+        <AccountFooter parentAccount={parentAccount} account={account} status={status} />
+        <Button
+          id={"send-amount-continue-button"}
+          isLoading={bridgePending}
+          primary
+          disabled={!canNext}
+          onClick={this.onNext}
+        >
+          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
+        </Button>
+      </>
+    );
+  }
+}
 
 const StepAmount = ({
   t,
@@ -53,38 +87,5 @@ const StepAmount = ({
     </Box>
   );
 };
-
-export class StepAmountFooter extends PureComponent<StepProps> {
-  onNext = async () => {
-    const { transitionTo } = this.props;
-    transitionTo("connectDevice");
-  };
-
-  render() {
-    const { account, parentAccount, status, bridgePending } = this.props;
-    const { errors } = status;
-    if (!account) return null;
-
-    const mainAccount = getMainAccount(account, parentAccount);
-    const isTerminated = mainAccount.currency.terminated;
-    const hasErrors = Object.keys(errors).length;
-    const canNext = !bridgePending && !hasErrors && !isTerminated;
-
-    return (
-      <>
-        <AccountFooter parentAccount={parentAccount} account={account} status={status} />
-        <Button
-          id={"send-amount-continue-button"}
-          isLoading={bridgePending}
-          primary
-          disabled={!canNext}
-          onClick={this.onNext}
-        >
-          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
-        </Button>
-      </>
-    );
-  }
-}
 
 export default StepAmount;

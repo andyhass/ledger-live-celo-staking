@@ -1,60 +1,26 @@
 // @flow
+
 import invariant from "invariant";
 import React from "react";
 import { Trans } from "react-i18next";
-
 import { SyncSkipUnderPriority } from "@ledgerhq/live-common/bridge/react/index";
-
 import AccountFooter from "~/renderer/modals/Send/AccountFooter";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import ErrorBanner from "~/renderer/components/ErrorBanner";
-
-import type { StepProps } from "../types";
 import AmountField from "../fields/AmountField";
 import Alert from "~/renderer/components/Alert";
 import { urls } from "~/config/urls";
+import type { StepProps } from "../types";
 
-export default function StepAmount({
-  account,
-  parentAccount,
-  onChangeTransaction,
-  transaction,
-  status,
-  error,
-  bridgePending,
-  t,
-}: StepProps) {
-  invariant(account && transaction, "account and transaction required");
-
-  return (
-    <Box flow={1}>
-      <SyncSkipUnderPriority priority={100} />
-      {error && <ErrorBanner error={error} />}
-      <Alert type="primary" mb={4} learnMoreUrl={urls.celo.learnMore}>
-        <Trans i18nKey="celo.lock.steps.amount.info" />
-      </Alert>
-      <AmountField
-        transaction={transaction}
-        account={account}
-        parentAccount={parentAccount}
-        bridgePending={bridgePending}
-        onChangeTransaction={onChangeTransaction}
-        status={status}
-        t={t}
-      />
-    </Box>
-  );
-}
-
-export function StepAmountFooter({
+export const StepAmountFooter = ({
   transitionTo,
   account,
   parentAccount,
   onClose,
   status,
   bridgePending,
-}: StepProps) {
+}: StepProps) => {
   invariant(account, "account required");
   const { errors } = status;
   const hasErrors = Object.keys(errors).length;
@@ -78,4 +44,38 @@ export function StepAmountFooter({
       </Box>
     </>
   );
-}
+};
+
+const StepAmount = ({
+  account,
+  parentAccount,
+  onChangeTransaction,
+  transaction,
+  status,
+  error,
+  bridgePending,
+  t,
+}: StepProps) => {
+  invariant(account && transaction, "account and transaction required");
+
+  return (
+    <Box flow={1}>
+      <SyncSkipUnderPriority priority={100} />
+      {error && <ErrorBanner error={error} />}
+      <Alert type="primary" mb={4} learnMoreUrl={urls.celo.learnMore}>
+        <Trans i18nKey="celo.lock.steps.amount.info" />
+      </Alert>
+      <AmountField
+        transaction={transaction}
+        account={account}
+        parentAccount={parentAccount}
+        bridgePending={bridgePending}
+        onChangeTransaction={onChangeTransaction}
+        status={status}
+        t={t}
+      />
+    </Box>
+  );
+};
+
+export default StepAmount;

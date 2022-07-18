@@ -1,4 +1,5 @@
 // @flow
+
 import type { Step } from "~/renderer/components/Stepper";
 import type { CoreStakingFlowModalStepProps } from "../types";
 

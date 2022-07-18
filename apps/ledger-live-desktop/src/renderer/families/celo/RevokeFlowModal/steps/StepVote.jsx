@@ -1,4 +1,5 @@
 // @flow
+
 import { getAccountBridge } from "@ledgerhq/live-common/bridge/index";
 import invariant from "invariant";
 import React, { useCallback, useMemo } from "react";
@@ -7,23 +8,53 @@ import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import ErrorBanner from "~/renderer/components/ErrorBanner";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import RevokeVoteRow from "../components/RevokeVoteRow";
-import type { StepProps } from "../types";
-import styled from "styled-components";
 import { useCeloPreloadData } from "@ledgerhq/live-common/families/celo/react";
 import { getAccountUnit } from "@ledgerhq/live-common/account/index";
 import { revokableVotes, fallbackValidatorGroup } from "@ledgerhq/live-common/families/celo/logic";
 import Alert from "~/renderer/components/Alert";
 import { urls } from "~/config/urls";
+import * as S from "./StepVote.styles";
+import type { StepProps } from "../types";
 
-export default function StepVote({
+export const StepVoteFooter = ({
+  transitionTo,
+  account,
+  onClose,
+  bridgePending,
+  transaction,
+}: StepProps) => {
+  invariant(account, "account required");
+
+  const canNext = !bridgePending && transaction?.recipient && transaction?.index != null;
+
+  return (
+    <>
+      <Box horizontal>
+        <Button mr={1} secondary onClick={onClose}>
+          <Trans i18nKey="common.cancel" />
+        </Button>
+        <Button
+          id="vote-continue-button"
+          disabled={!canNext}
+          primary
+          isLoading={bridgePending}
+          onClick={() => transitionTo("amount")}
+        >
+          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
+        </Button>
+      </Box>
+    </>
+  );
+};
+
+const StepVote = ({
   account,
   parentAccount,
   onChangeTransaction,
   transaction,
   error,
-}: StepProps) {
+}: StepProps) => {
   invariant(
     account && account.celoResources && transaction,
     "celo account, resources and transaction required",
@@ -69,7 +100,7 @@ export default function StepVote({
       <Alert type="primary" mb={4} learnMoreUrl={urls.celo.learnMore}>
         <Trans i18nKey="celo.revoke.steps.vote.info" />
       </Alert>
-      <ValidatorsFieldContainer vertical scroll>
+      <S.ValidatorsFieldContainer vertical scroll>
         <Box p={1}>
           {mappedVotes.map(({ vote, validatorGroup }) => {
             const active =
@@ -88,44 +119,9 @@ export default function StepVote({
             );
           })}
         </Box>
-      </ValidatorsFieldContainer>
+      </S.ValidatorsFieldContainer>
     </Box>
   );
-}
+};
 
-const ValidatorsFieldContainer: ThemedComponent<{}> = styled(Box)`
-  border: 1px solid ${p => p.theme.colors.palette.divider};
-  border-radius: 4px;
-  height: 270px;
-`;
-
-export function StepVoteFooter({
-  transitionTo,
-  account,
-  onClose,
-  bridgePending,
-  transaction,
-}: StepProps) {
-  invariant(account, "account required");
-
-  const canNext = !bridgePending && transaction?.recipient && transaction?.index != null;
-
-  return (
-    <>
-      <Box horizontal>
-        <Button mr={1} secondary onClick={onClose}>
-          <Trans i18nKey="common.cancel" />
-        </Button>
-        <Button
-          id="vote-continue-button"
-          disabled={!canNext}
-          primary
-          isLoading={bridgePending}
-          onClick={() => transitionTo("amount")}
-        >
-          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
-        </Button>
-      </Box>
-    </>
-  );
-}
+export default StepVote;

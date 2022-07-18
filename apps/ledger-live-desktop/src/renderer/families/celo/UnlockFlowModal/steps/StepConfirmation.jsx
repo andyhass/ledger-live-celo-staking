@@ -2,9 +2,8 @@
 
 import React from "react";
 import { Trans } from "react-i18next";
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import TrackPage from "~/renderer/analytics/TrackPage";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import { multiline } from "~/renderer/styles/helpers";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
@@ -14,65 +13,17 @@ import SuccessDisplay from "~/renderer/components/SuccessDisplay";
 import BroadcastErrorDisclaimer from "~/renderer/components/BroadcastErrorDisclaimer";
 import { OperationDetails } from "~/renderer/drawers/OperationDetails";
 import { setDrawer } from "~/renderer/drawers/Provider";
-
+import * as S from "./StepConfirmation.styles";
 import type { StepProps } from "../types";
 
-const Container: ThemedComponent<{ shouldSpace?: boolean }> = styled(Box).attrs(() => ({
-  alignItems: "center",
-  grow: true,
-  color: "palette.text.shade100",
-}))`
-  justify-content: ${p => (p.shouldSpace ? "space-between" : "center")};
-  min-height: 220px;
-`;
-
-function StepConfirmation({
-  account,
-  t,
-  optimisticOperation,
-  error,
-  theme,
-  device,
-  signed,
-  transaction,
-}: StepProps & { theme: * }) {
-  if (optimisticOperation) {
-    return (
-      <Container>
-        <TrackPage category="Celo Unlock" name="Step Confirmed" />
-        <SuccessDisplay
-          title={<Trans i18nKey="celo.unlock.steps.confirmation.success.title" />}
-          description={multiline(t("celo.unlock.steps.confirmation.success.text"))}
-        />
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container shouldSpace={signed}>
-        <TrackPage category="Celo Unlock" name="Step Confirmation Error" />
-        {signed ? (
-          <BroadcastErrorDisclaimer
-            title={<Trans i18nKey="celo.unlock.steps.confirmation.broadcastError" />}
-          />
-        ) : null}
-        <ErrorDisplay error={error} withExportLogs />
-      </Container>
-    );
-  }
-
-  return null;
-}
-
-export function StepConfirmationFooter({
+export const StepConfirmationFooter = ({
   account,
   parentAccount,
   onRetry,
   error,
   onClose,
   optimisticOperation,
-}: StepProps) {
+}: StepProps) => {
   return (
     <Box horizontal alignItems="right">
       <Button data-test-id="modal-close-button" ml={2} onClick={onClose}>
@@ -101,6 +52,45 @@ export function StepConfirmationFooter({
       ) : null}
     </Box>
   );
-}
+};
+
+const StepConfirmation = ({
+  account,
+  t,
+  optimisticOperation,
+  error,
+  theme,
+  device,
+  signed,
+  transaction,
+}: StepProps & { theme: * }) => {
+  if (optimisticOperation) {
+    return (
+      <S.Container>
+        <TrackPage category="Celo Unlock" name="Step Confirmed" />
+        <SuccessDisplay
+          title={<Trans i18nKey="celo.unlock.steps.confirmation.success.title" />}
+          description={multiline(t("celo.unlock.steps.confirmation.success.text"))}
+        />
+      </S.Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <S.Container shouldSpace={signed}>
+        <TrackPage category="Celo Unlock" name="Step Confirmation Error" />
+        {signed ? (
+          <BroadcastErrorDisclaimer
+            title={<Trans i18nKey="celo.unlock.steps.confirmation.broadcastError" />}
+          />
+        ) : null}
+        <ErrorDisplay error={error} withExportLogs />
+      </S.Container>
+    );
+  }
+
+  return null;
+};
 
 export default withTheme(StepConfirmation);

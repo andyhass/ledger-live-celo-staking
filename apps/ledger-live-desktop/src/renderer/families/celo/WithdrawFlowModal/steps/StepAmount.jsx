@@ -1,17 +1,12 @@
 // @flow
+
 import invariant from "invariant";
 import React, { useCallback } from "react";
-import styled from "styled-components";
-
 import { Trans } from "react-i18next";
 import moment from "moment";
-
-import type { StepProps } from "../types";
-
 import { getAccountBridge } from "@ledgerhq/live-common/bridge/index";
 import { TransactionRefusedOnDevice } from "@ledgerhq/live-common/errors";
 import { UserRefusedOnDevice } from "@ledgerhq/errors";
-
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
@@ -20,60 +15,44 @@ import FormattedVal from "~/renderer/components/FormattedVal";
 import CheckBox from "~/renderer/components/CheckBox";
 import Clock from "~/renderer/icons/Clock";
 import AccountFooter from "~/renderer/modals/Send/AccountFooter";
-
 import ErrorBanner from "~/renderer/components/ErrorBanner";
+import * as S from "./StepAmount.styles";
+import type { StepProps } from "../types";
 
-const Description = styled(Text).attrs(({ isPill }) => ({
-  ff: isPill ? "Inter|SemiBold" : "Inter|Regular",
-  fontSize: isPill ? 2 : 3,
-  color: "palette.text.shade60",
-}))`
-  ${p =>
-    p.isPill
-      ? `
-    text-transform: uppercase;
-  `
-      : ""}
-`;
+export const StepAmountFooter = ({
+  transitionTo,
+  account,
+  parentAccount,
+  onClose,
+  status,
+  bridgePending,
+}: StepProps) => {
+  invariant(account, "account required");
+  const { errors } = status;
+  const hasErrors = Object.keys(errors).length;
+  const canNext = !bridgePending && !hasErrors;
 
-const SelectResource = styled(Box).attrs(() => ({
-  horizontal: true,
-  p: 3,
-  mt: 2,
-  alignItems: "center",
-  justifyContent: "space-between",
-}))`
-  height: 58px;
-  border: 1px solid ${p => p.theme.colors.palette.text.shade20};
-  border-radius: 4px;
-  ${p =>
-    p.disabled
-      ? `
-          opacity: 0.7;
-          cursor: auto;
-        `
-      : ``}
-`;
+  return (
+    <>
+      <AccountFooter parentAccount={parentAccount} account={account} status={status} />
+      <Box horizontal>
+        <Button mr={1} secondary onClick={onClose}>
+          <Trans i18nKey="common.cancel" />
+        </Button>
+        <Button
+          disabled={!canNext}
+          isLoading={bridgePending}
+          primary
+          onClick={() => transitionTo("connectDevice")}
+        >
+          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
+        </Button>
+      </Box>
+    </>
+  );
+};
 
-const TimerWrapper = styled(Box).attrs(() => ({
-  horizontal: true,
-  alignItems: "center",
-  ff: "Inter|Medium",
-  fontSize: 3,
-  color: "palette.text.shade60",
-  bg: "palette.text.shade10",
-  borderRadius: 4,
-  p: 1,
-  mr: 4,
-}))`
-  align-self: center;
-
-  ${Description} {
-    margin-left: 5px;
-  }
-`;
-
-export default function StepAmount({
+const StepAmount = ({
   account,
   parentAccount,
   onChangeTransaction,
@@ -82,7 +61,7 @@ export default function StepAmount({
   error,
   bridgePending,
   t,
-}: StepProps) {
+}: StepProps) => {
   invariant(
     account && transaction && account.celoResources && account.celoResources.pendingWithdrawals,
     "account with pending withdrawals and transaction required",
@@ -118,14 +97,14 @@ export default function StepAmount({
           const withdrawalTime = new Date(time.toNumber() * 1000);
           const disabled = withdrawalTime > new Date();
           return (
-            <SelectResource disabled={disabled} key={index}>
+            <S.SelectResource disabled={disabled} key={index}>
               <Text ff="Inter|SemiBold"></Text>
               <Box horizontal alignItems="center">
                 {disabled && (
-                  <TimerWrapper>
+                  <S.TimerWrapper>
                     <Clock size={12} />
-                    <Description isPill>{moment(withdrawalTime).fromNow()}</Description>
-                  </TimerWrapper>
+                    <S.Description isPill>{moment(withdrawalTime).fromNow()}</S.Description>
+                  </S.TimerWrapper>
                 )}
                 <FormattedVal
                   val={value}
@@ -142,43 +121,12 @@ export default function StepAmount({
                   onChange={() => onChange(index)}
                 />
               </Box>
-            </SelectResource>
+            </S.SelectResource>
           );
         })}
       </Box>
     </Box>
   );
-}
+};
 
-export function StepAmountFooter({
-  transitionTo,
-  account,
-  parentAccount,
-  onClose,
-  status,
-  bridgePending,
-}: StepProps) {
-  invariant(account, "account required");
-  const { errors } = status;
-  const hasErrors = Object.keys(errors).length;
-  const canNext = !bridgePending && !hasErrors;
-
-  return (
-    <>
-      <AccountFooter parentAccount={parentAccount} account={account} status={status} />
-      <Box horizontal>
-        <Button mr={1} secondary onClick={onClose}>
-          <Trans i18nKey="common.cancel" />
-        </Button>
-        <Button
-          disabled={!canNext}
-          isLoading={bridgePending}
-          primary
-          onClick={() => transitionTo("connectDevice")}
-        >
-          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
-        </Button>
-      </Box>
-    </>
-  );
-}
+export default StepAmount;

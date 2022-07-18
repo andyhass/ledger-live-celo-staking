@@ -1,19 +1,18 @@
 // @flow
+
 import { getAccountUnit } from "@ledgerhq/live-common/account/index";
-import type { CeloValidatorGroup } from "@ledgerhq/live-common/families/celo/types";
-import type { Account, TransactionStatus } from "@ledgerhq/live-common/types";
 import invariant from "invariant";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Trans } from "react-i18next";
-import styled from "styled-components";
 import Box from "~/renderer/components/Box";
 import ScrollLoadingList from "~/renderer/components/ScrollLoadingList";
 import Text from "~/renderer/components/Text";
 import IconAngleDown from "~/renderer/icons/AngleDown";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
 import ValidatorGroupRow from "../components/ValidatorGroupRow";
-
+import * as S from "./ValidatorGroupsField.styles";
 import { useCeloPreloadData } from "@ledgerhq/live-common/families/celo/react";
+import type { CeloValidatorGroup } from "@ledgerhq/live-common/families/celo/types";
+import type { Account, TransactionStatus } from "@ledgerhq/live-common/types";
 
 type Props = {
   account: Account,
@@ -69,7 +68,7 @@ const ValidatorGroupsField = ({
   };
 
   return (
-    <ValidatorsFieldContainer>
+    <S.ValidatorsFieldContainer>
       <Box p={1}>
         <ScrollLoadingList
           data={showAll ? validatorGroups : [chosenValidatorGroup ?? validatorGroups[0]]}
@@ -78,38 +77,14 @@ const ValidatorGroupsField = ({
           noResultPlaceholder={null}
         />
       </Box>
-      <SeeAllButton expanded={showAll} onClick={() => setShowAll(shown => !shown)}>
+      <S.SeeAllButton expanded={showAll} onClick={() => setShowAll(shown => !shown)}>
         <Text color="wallet" ff="Inter|SemiBold" fontSize={4}>
           <Trans i18nKey={showAll ? "distribution.showLess" : "distribution.showAll"} />
         </Text>
         <IconAngleDown size={16} />
-      </SeeAllButton>
-    </ValidatorsFieldContainer>
+      </S.SeeAllButton>
+    </S.ValidatorsFieldContainer>
   );
 };
-
-const ValidatorsFieldContainer: ThemedComponent<{}> = styled(Box)`
-  border: 1px solid ${p => p.theme.colors.palette.divider};
-  border-radius: 4px;
-`;
-
-const SeeAllButton: ThemedComponent<{ expanded: boolean }> = styled.div`
-  display: flex;
-  color: ${p => p.theme.colors.wallet};
-  align-items: center;
-  justify-content: center;
-  border-top: 1px solid ${p => p.theme.colors.palette.divider};
-  height: 40px;
-  cursor: pointer;
-
-  &:hover ${Text} {
-    text-decoration: underline;
-  }
-
-  > :nth-child(2) {
-    margin-left: 8px;
-    transform: rotate(${p => (p.expanded ? "180deg" : "0deg")});
-  }
-`;
 
 export default ValidatorGroupsField;

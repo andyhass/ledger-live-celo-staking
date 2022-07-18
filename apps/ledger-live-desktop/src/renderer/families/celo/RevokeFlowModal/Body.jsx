@@ -1,15 +1,13 @@
 // @flow
+
 import { UserRefusedOnDevice } from "@ledgerhq/errors";
 import { addPendingOperation } from "@ledgerhq/live-common/account/index";
 import { getAccountBridge } from "@ledgerhq/live-common/bridge/index";
 import { SyncSkipUnderPriority } from "@ledgerhq/live-common/bridge/react/index";
 import useBridgeTransaction from "@ledgerhq/live-common/bridge/useBridgeTransaction";
-import type { CeloVote, Transaction } from "@ledgerhq/live-common/families/celo/types";
-import type { AccountBridge, Operation, Account } from "@ledgerhq/live-common/types";
 import invariant from "invariant";
 import React, { useCallback, useState } from "react";
 import { Trans, withTranslation } from "react-i18next";
-import type { TFunction } from "react-i18next";
 import { connect, useDispatch } from "react-redux";
 import { compose } from "redux";
 import { createStructuredSelector } from "reselect";
@@ -23,6 +21,9 @@ import { getCurrentDevice } from "~/renderer/reducers/devices";
 import StepAmount, { StepAmountFooter } from "./steps/StepAmount";
 import StepConfirmation, { StepConfirmationFooter } from "./steps/StepConfirmation";
 import StepVote, { StepVoteFooter } from "./steps/StepVote";
+import type { CeloVote, Transaction } from "@ledgerhq/live-common/families/celo/types";
+import type { AccountBridge, Operation, Account } from "@ledgerhq/live-common/types";
+import type { TFunction } from "react-i18next";
 import type { St, StepProps, StepId } from "./types";
 import type { Device } from "@ledgerhq/live-common/hw/actions/types";
 

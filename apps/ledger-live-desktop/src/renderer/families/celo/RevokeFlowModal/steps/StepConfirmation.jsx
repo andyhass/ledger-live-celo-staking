@@ -2,7 +2,7 @@
 import { SyncOneAccountOnMount } from "@ledgerhq/live-common/bridge/react/index";
 import React from "react";
 import { Trans } from "react-i18next";
-import styled, { withTheme } from "styled-components";
+import { withTheme } from "styled-components";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import BroadcastErrorDisclaimer from "~/renderer/components/BroadcastErrorDisclaimer";
@@ -13,34 +13,26 @@ import SuccessDisplay from "~/renderer/components/SuccessDisplay";
 import { OperationDetails } from "~/renderer/drawers/OperationDetails";
 import { setDrawer } from "~/renderer/drawers/Provider";
 import { multiline } from "~/renderer/styles/helpers";
-import type { ThemedComponent } from "~/renderer/styles/StyleProvider";
+import * as S from "./StepConfirmation.styles";
 import type { StepProps } from "../types";
 
-const Container: ThemedComponent<{ shouldSpace?: boolean }> = styled(Box).attrs(() => ({
-  alignItems: "center",
-  grow: true,
-  color: "palette.text.shade100",
-}))`
-  justify-content: ${p => (p.shouldSpace ? "space-between" : "center")};
-`;
-
-function StepConfirmation({ t, optimisticOperation, error, signed }: StepProps & { theme: * }) {
+const StepConfirmation = ({ t, optimisticOperation, error, signed }: StepProps & { theme: * }) => {
   if (optimisticOperation) {
     return (
-      <Container>
+      <S.Container>
         <TrackPage category="Celo Revoke" name="Step Confirmation" />
         <SyncOneAccountOnMount priority={10} accountId={optimisticOperation.accountId} />
         <SuccessDisplay
           title={<Trans i18nKey="celo.revoke.steps.confirmation.success.title" />}
           description={multiline(t("celo.revoke.steps.confirmation.success.text"))}
         />
-      </Container>
+      </S.Container>
     );
   }
 
   if (error) {
     return (
-      <Container shouldSpace={signed}>
+      <S.Container shouldSpace={signed}>
         <TrackPage category="Celo Revoke" name="Step Confirmation Error" />
         {signed ? (
           <BroadcastErrorDisclaimer
@@ -48,21 +40,21 @@ function StepConfirmation({ t, optimisticOperation, error, signed }: StepProps &
           />
         ) : null}
         <ErrorDisplay error={error} withExportLogs />
-      </Container>
+      </S.Container>
     );
   }
 
   return null;
-}
+};
 
-export function StepConfirmationFooter({
+export const StepConfirmationFooter = ({
   account,
   parentAccount,
   onRetry,
   error,
   onClose,
   optimisticOperation,
-}: StepProps) {
+}: StepProps) => {
   return (
     <Box horizontal alignItems="right">
       <Button data-test-id="modal-close-button" ml={2} onClick={onClose}>
@@ -91,6 +83,6 @@ export function StepConfirmationFooter({
       ) : null}
     </Box>
   );
-}
+};
 
 export default withTheme(StepConfirmation);

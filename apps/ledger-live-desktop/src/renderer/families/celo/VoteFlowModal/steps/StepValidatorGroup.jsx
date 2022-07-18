@@ -1,7 +1,6 @@
 // @flow
+
 import { getAccountBridge } from "@ledgerhq/live-common/bridge/index";
-import type { Transaction } from "@ledgerhq/live-common/families/celo/types";
-import type { AccountBridge } from "@ledgerhq/live-common/types";
 import invariant from "invariant";
 import React from "react";
 import { Trans } from "react-i18next";
@@ -11,10 +10,44 @@ import Button from "~/renderer/components/Button";
 import ErrorBanner from "~/renderer/components/ErrorBanner";
 import LedgerByFigmentTC from "../components/LedgerByFigmentTCLink";
 import ValidatorGroupsField from "../fields/ValidatorGroupsField";
-import type { StepProps } from "../types";
 import { isDefaultValidatorGroupAddress } from "@ledgerhq/live-common/families/celo/logic";
+import type { Transaction } from "@ledgerhq/live-common/families/celo/types";
+import type { AccountBridge } from "@ledgerhq/live-common/types";
+import type { StepProps } from "../types";
 
-export default function StepValidatorGroup({
+export const StepValidatorGroupFooter = ({
+  transitionTo,
+  account,
+  onClose,
+  bridgePending,
+  transaction,
+}: StepProps) => {
+  invariant(account, "account required");
+
+  const canNext = !bridgePending && transaction?.recipient;
+  const displayTC = isDefaultValidatorGroupAddress(transaction?.recipient);
+
+  return (
+    <>
+      {displayTC && <LedgerByFigmentTC />}
+      <Box horizontal>
+        <Button mr={1} secondary onClick={onClose}>
+          <Trans i18nKey="common.cancel" />
+        </Button>
+        <Button
+          id="vote-continue-button"
+          disabled={!canNext}
+          primary
+          onClick={() => transitionTo("amount")}
+        >
+          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
+        </Button>
+      </Box>
+    </>
+  );
+};
+
+const StepValidatorGroup = ({
   account,
   parentAccount,
   onUpdateTransaction,
@@ -22,7 +55,7 @@ export default function StepValidatorGroup({
   status,
   error,
   t,
-}: StepProps) {
+}: StepProps) => {
   invariant(
     account && account.celoResources && transaction,
     "celo account, resources and transaction required",
@@ -52,36 +85,6 @@ export default function StepValidatorGroup({
       />
     </Box>
   );
-}
+};
 
-export function StepValidatorGroupFooter({
-  transitionTo,
-  account,
-  onClose,
-  bridgePending,
-  transaction,
-}: StepProps) {
-  invariant(account, "account required");
-
-  const canNext = !bridgePending && transaction?.recipient;
-  const displayTC = isDefaultValidatorGroupAddress(transaction?.recipient);
-
-  return (
-    <>
-      {displayTC && <LedgerByFigmentTC />}
-      <Box horizontal>
-        <Button mr={1} secondary onClick={onClose}>
-          <Trans i18nKey="common.cancel" />
-        </Button>
-        <Button
-          id="vote-continue-button"
-          disabled={!canNext}
-          primary
-          onClick={() => transitionTo("amount")}
-        >
-          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
-        </Button>
-      </Box>
-    </>
-  );
-}
+export default StepValidatorGroup;

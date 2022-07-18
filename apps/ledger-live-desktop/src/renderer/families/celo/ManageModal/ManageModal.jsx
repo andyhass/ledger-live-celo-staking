@@ -2,102 +2,23 @@
 
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import styled, { css } from "styled-components";
 import { Trans } from "react-i18next";
-import type { Account } from "@ledgerhq/live-common/types";
-
 import { openModal } from "~/renderer/actions/modals";
 import Box from "~/renderer/components/Box";
 import Modal, { ModalBody } from "~/renderer/components/Modal";
-
 import BondIcon from "~/renderer/icons/LinkIcon";
 import UnbondIcon from "~/renderer/icons/Undelegate";
 import NominateIcon from "~/renderer/icons/Vote";
 import RevokeIcon from "~/renderer/icons/VoteNay";
 import ClaimRewardIcon from "~/renderer/icons/ClaimReward";
-
-import Text from "~/renderer/components/Text";
 import invariant from "invariant";
-
 import {
   availablePendingWithdrawals,
   activatableVotes,
   revokableVotes,
 } from "@ledgerhq/live-common/families/celo/logic";
-
-const IconWrapper = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 32px;
-  background-color: ${p => p.theme.colors.palette.action.hover};
-  color: ${p => p.theme.colors.palette.primary.main};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: ${p => p.theme.space[2]}px;
-`;
-
-const ManageButton = styled.button`
-  min-height: 88px;
-  padding: 16px;
-  margin: 5px 0;
-  border-radius: 4px;
-  border: 1px solid ${p => p.theme.colors.palette.divider};
-  background-color: rgba(0, 0, 0, 0);
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  &:hover {
-    border: 1px solid ${p => p.theme.colors.palette.primary.main};
-  }
-
-  ${p =>
-    p.disabled
-      ? css`
-          pointer-events: none;
-          cursor: auto;
-          ${IconWrapper} {
-            background-color: ${p.theme.colors.palette.action.active};
-            color: ${p.theme.colors.palette.text.shade20};
-          }
-          ${Title} {
-            color: ${p.theme.colors.palette.text.shade50};
-          }
-          ${Description} {
-            color: ${p.theme.colors.palette.text.shade30};
-          }
-        `
-      : `
-      cursor: pointer;
-  `};
-`;
-
-const InfoWrapper = styled(Box).attrs(() => ({
-  vertical: true,
-  flex: 1,
-  ml: 3,
-  textAlign: "start",
-}))``;
-
-const Title = styled(Text).attrs(() => ({
-  ff: "Inter|SemiBold",
-  fontSize: 4,
-}))``;
-
-const Description = styled(Text).attrs(({ isPill }) => ({
-  ff: isPill ? "Inter|SemiBold" : "Inter|Regular",
-  fontSize: isPill ? 2 : 3,
-  color: "palette.text.shade60",
-}))`
-  ${p =>
-    p.isPill
-      ? `
-    text-transform: uppercase;
-  `
-      : ""}
-`;
+import * as S from "./ManageModal.styles";
+import type { Account } from "@ledgerhq/live-common/types";
 
 type Props = {
   name?: string,
@@ -144,7 +65,7 @@ const ManageModal = ({ name, account, ...rest }: Props) => {
           render={() => (
             <>
               <Box>
-                <ManageButton
+                <S.ManageButton
                   onClick={() => {
                     if (account.celoResources?.registrationStatus) {
                       onSelectAction(onClose, "MODAL_CELO_LOCK");
@@ -155,83 +76,83 @@ const ManageModal = ({ name, account, ...rest }: Props) => {
                     }
                   }}
                 >
-                  <IconWrapper>
+                  <S.IconWrapper>
                     <BondIcon size={16} />
-                  </IconWrapper>
-                  <InfoWrapper>
-                    <Title>
+                  </S.IconWrapper>
+                  <S.InfoWrapper>
+                    <S.Title>
                       <Trans i18nKey="Lock" />
-                    </Title>
-                    <Description>
+                    </S.Title>
+                    <S.Description>
                       <Trans i18nKey="celo.manage.lock.description" />
-                    </Description>
-                  </InfoWrapper>
-                </ManageButton>
-                <ManageButton
+                    </S.Description>
+                  </S.InfoWrapper>
+                </S.ManageButton>
+                <S.ManageButton
                   disabled={!votingEnabled}
                   onClick={() => onSelectAction(onClose, "MODAL_CELO_VOTE")}
                 >
-                  <IconWrapper>
+                  <S.IconWrapper>
                     <NominateIcon size={16} />
-                  </IconWrapper>
-                  <InfoWrapper>
-                    <Title>
+                  </S.IconWrapper>
+                  <S.InfoWrapper>
+                    <S.Title>
                       <Trans i18nKey="celo.manage.vote.title" />
-                    </Title>
-                    <Description>
+                    </S.Title>
+                    <S.Description>
                       <Trans i18nKey="celo.manage.vote.description" />
-                    </Description>
-                  </InfoWrapper>
-                </ManageButton>
-                <ManageButton
+                    </S.Description>
+                  </S.InfoWrapper>
+                </S.ManageButton>
+                <S.ManageButton
                   disabled={!activatingEnabled}
                   onClick={() => onSelectAction(onClose, "MODAL_CELO_ACTIVATE")}
                 >
-                  <IconWrapper>
+                  <S.IconWrapper>
                     <NominateIcon size={16} />
-                  </IconWrapper>
-                  <InfoWrapper>
-                    <Title>
+                  </S.IconWrapper>
+                  <S.InfoWrapper>
+                    <S.Title>
                       <Trans i18nKey="celo.manage.activate.title" />
-                    </Title>
-                    <Description>
+                    </S.Title>
+                    <S.Description>
                       <Trans i18nKey="celo.manage.activate.description" />
-                    </Description>
-                  </InfoWrapper>
-                </ManageButton>
-                <ManageButton
+                    </S.Description>
+                  </S.InfoWrapper>
+                </S.ManageButton>
+                <S.ManageButton
                   disabled={!revokingEnabled}
                   onClick={() => onSelectAction(onClose, "MODAL_CELO_REVOKE")}
                 >
-                  <IconWrapper>
+                  <S.IconWrapper>
                     <RevokeIcon size={16} />
-                  </IconWrapper>
-                  <InfoWrapper>
-                    <Title>
+                  </S.IconWrapper>
+                  <S.InfoWrapper>
+                    <S.Title>
                       <Trans i18nKey="celo.manage.revoke.title" />
-                    </Title>
-                    <Description>
+                    </S.Title>
+                    <S.Description>
                       <Trans i18nKey="celo.manage.revoke.description" />
-                    </Description>
-                  </InfoWrapper>
-                </ManageButton>
-                <ManageButton
+                    </S.Description>
+                  </S.InfoWrapper>
+                </S.ManageButton>
+                <S.ManageButton
                   disabled={!unlockingEnabled}
                   onClick={() => onSelectAction(onClose, "MODAL_CELO_UNLOCK")}
                 >
-                  <IconWrapper>
+                  <S.IconWrapper>
                     <UnbondIcon size={16} />
-                  </IconWrapper>
-                  <InfoWrapper>
-                    <Title>
+                  </S.IconWrapper>
+                  <S.InfoWrapper>
+                    <S.Title>
                       <Trans i18nKey="Unlock" />
-                    </Title>
-                    <Description>
+                    </S.Title>
+                    <S.Description>
                       <Trans i18nKey="celo.manage.unlock.description" />
-                    </Description>
-                  </InfoWrapper>
-                </ManageButton>
-                <ManageButton
+                    </S.Description>
+                  </S.InfoWrapper>
+                </S.ManageButton>
+                <S.ManageButton
                   disabled={!withdrawEnabled}
                   onClick={() =>
                     onSelectAction(onClose, "MODAL_CELO_WITHDRAW", {
@@ -239,18 +160,18 @@ const ManageModal = ({ name, account, ...rest }: Props) => {
                     })
                   }
                 >
-                  <IconWrapper>
+                  <S.IconWrapper>
                     <ClaimRewardIcon size={16} />
-                  </IconWrapper>
-                  <InfoWrapper>
-                    <Title>
+                  </S.IconWrapper>
+                  <S.InfoWrapper>
+                    <S.Title>
                       <Trans i18nKey="celo.manage.withdraw.title" />
-                    </Title>
-                    <Description>
+                    </S.Title>
+                    <S.Description>
                       <Trans i18nKey="celo.manage.withdraw.description" />
-                    </Description>
-                  </InfoWrapper>
-                </ManageButton>
+                    </S.Description>
+                  </S.InfoWrapper>
+                </S.ManageButton>
               </Box>
             </>
           )}

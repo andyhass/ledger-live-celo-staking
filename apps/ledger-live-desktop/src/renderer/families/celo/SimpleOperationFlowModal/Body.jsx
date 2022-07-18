@@ -7,28 +7,22 @@ import { Trans, withTranslation } from "react-i18next";
 import { createStructuredSelector } from "reselect";
 import { SyncSkipUnderPriority } from "@ledgerhq/live-common/bridge/react/index";
 import Track from "~/renderer/analytics/Track";
-
 import { UserRefusedOnDevice } from "@ledgerhq/errors";
-
 import { getAccountBridge } from "@ledgerhq/live-common/bridge/index";
 import useBridgeTransaction from "@ledgerhq/live-common/bridge/useBridgeTransaction";
-
-import type { StepId, StepProps, St, Mode } from "./types";
-import type { Account, Operation } from "@ledgerhq/live-common/types";
-import type { TFunction } from "react-i18next";
-import type { Device } from "@ledgerhq/live-common/hw/actions/types";
-
 import { addPendingOperation } from "@ledgerhq/live-common/account/index";
 import { updateAccountWithUpdater } from "~/renderer/actions/accounts";
-
 import { getCurrentDevice } from "~/renderer/reducers/devices";
 import { closeModal, openModal } from "~/renderer/actions/modals";
-
 import Stepper from "~/renderer/components/Stepper";
 import StepInfo, { StepInfoFooter } from "./steps/StepInfo";
 import GenericStepConnectDevice from "~/renderer/modals/Send/steps/GenericStepConnectDevice";
 import StepConfirmation, { StepConfirmationFooter } from "./steps/StepConfirmation";
 import logger from "~/logger/logger";
+import type { StepId, StepProps, St, Mode } from "./types";
+import type { Account, Operation } from "@ledgerhq/live-common/types";
+import type { TFunction } from "react-i18next";
+import type { Device } from "@ledgerhq/live-common/hw/actions/types";
 
 type OwnProps = {|
   stepId: StepId,

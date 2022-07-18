@@ -1,22 +1,53 @@
 // @flow
+
 import invariant from "invariant";
 import React from "react";
 import { Trans } from "react-i18next";
 import { SyncSkipUnderPriority } from "@ledgerhq/live-common/bridge/react/index";
-
 import { urls } from "~/config/urls";
-
 import AccountFooter from "~/renderer/modals/Send/AccountFooter";
 import TrackPage from "~/renderer/analytics/TrackPage";
 import Box from "~/renderer/components/Box";
 import Button from "~/renderer/components/Button";
 import Alert from "~/renderer/components/Alert";
 import ErrorBanner from "~/renderer/components/ErrorBanner";
-
-import type { StepProps } from "../types";
 import AmountField from "../fields/AmountField";
+import type { StepProps } from "../types";
 
-export default function StepAmount({
+export const StepAmountFooter = ({
+  transitionTo,
+  account,
+  parentAccount,
+  onClose,
+  status,
+  bridgePending,
+}: StepProps) => {
+  invariant(account, "account required");
+  const { errors } = status;
+  const hasErrors = Object.keys(errors).length;
+  const canNext = !bridgePending && !hasErrors;
+
+  return (
+    <>
+      <AccountFooter parentAccount={parentAccount} account={account} status={status} />
+      <Box horizontal>
+        <Button mr={1} secondary onClick={onClose}>
+          <Trans i18nKey="common.cancel" />
+        </Button>
+        <Button
+          disabled={!canNext}
+          isLoading={bridgePending}
+          primary
+          onClick={() => transitionTo("connectDevice")}
+        >
+          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
+        </Button>
+      </Box>
+    </>
+  );
+};
+
+const StepAmount = ({
   account,
   parentAccount,
   onChangeTransaction,
@@ -25,7 +56,7 @@ export default function StepAmount({
   error,
   bridgePending,
   t,
-}: StepProps) {
+}: StepProps) => {
   invariant(account && transaction, "account and transaction required");
 
   return (
@@ -52,37 +83,6 @@ export default function StepAmount({
       />
     </Box>
   );
-}
+};
 
-export function StepAmountFooter({
-  transitionTo,
-  account,
-  parentAccount,
-  onClose,
-  status,
-  bridgePending,
-}: StepProps) {
-  invariant(account, "account required");
-  const { errors } = status;
-  const hasErrors = Object.keys(errors).length;
-  const canNext = !bridgePending && !hasErrors;
-
-  return (
-    <>
-      <AccountFooter parentAccount={parentAccount} account={account} status={status} />
-      <Box horizontal>
-        <Button mr={1} secondary onClick={onClose}>
-          <Trans i18nKey="common.cancel" />
-        </Button>
-        <Button
-          disabled={!canNext}
-          isLoading={bridgePending}
-          primary
-          onClick={() => transitionTo("connectDevice")}
-        >
-          <Trans i18nKey="common.continue" isLoading={bridgePending} disabled={!canNext} />
-        </Button>
-      </Box>
-    </>
-  );
-}
+export default StepAmount;

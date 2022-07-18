@@ -1,39 +1,21 @@
 // @flow
+
 import invariant from "invariant";
 import React, { useCallback } from "react";
 import { Trans } from "react-i18next";
-import styled from "styled-components";
-
 import { BigNumber } from "bignumber.js";
-
 import { getAccountBridge } from "@ledgerhq/live-common/bridge/index";
 import { getAccountUnit } from "@ledgerhq/live-common/account/index";
-import type { TFunction } from "react-i18next";
-import type { Account, TransactionStatus } from "@ledgerhq/live-common/types";
-import type { Transaction } from "@ledgerhq/live-common/families/celo/types";
-
 import SpendableAmount from "~/renderer/components/SpendableAmount";
 import Label from "~/renderer/components/Label";
 import Box from "~/renderer/components/Box";
 import InputCurrency from "~/renderer/components/InputCurrency";
 import Switch from "~/renderer/components/Switch";
 import Text from "~/renderer/components/Text";
-
-const InputRight = styled(Box).attrs(() => ({
-  ff: "Inter|Medium",
-  color: "palette.text.shade60",
-  fontSize: 4,
-  justifyContent: "center",
-}))`
-  padding-right: 10px;
-`;
-
-const TextSeparator = styled.span`
-  height: 1em;
-  margin: 0 4px;
-  border: 1px solid;
-  border-color: ${p => p.theme.colors.palette.text.shade20};
-`;
+import * as S from "./AmountField.styles";
+import type { TFunction } from "react-i18next";
+import type { Account, TransactionStatus } from "@ledgerhq/live-common/types";
+import type { Transaction } from "@ledgerhq/live-common/families/celo/types";
 
 type Props = {
   t: TFunction,
@@ -110,7 +92,7 @@ const AmountField = ({
                 disableRounding
               />
             </Text>
-            <TextSeparator />
+            <S.TextSeparator />
             <Text
               color="palette.text.shade40"
               ff="Inter|Medium"
@@ -133,7 +115,7 @@ const AmountField = ({
         defaultUnit={defaultUnit}
         value={amount}
         onChange={onChange}
-        renderRight={<InputRight>{defaultUnit.code}</InputRight>}
+        renderRight={<S.InputRight>{defaultUnit.code}</S.InputRight>}
       />
     </Box>
   );
